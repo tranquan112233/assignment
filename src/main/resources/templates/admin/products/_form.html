@@ -1,0 +1,38 @@
+<!-- Form thêm sản phẩm -->
+<form th:fragment="_form" th:action="@{/admin/products/add}" method="post" class="mb-3">
+    <div class="row g-2 align-items-center">
+        <div class="col">
+            <input type="text" class="form-control" name="name" placeholder="Tên sản phẩm" required>
+        </div>
+        <div class="col">
+            <input type="number" class="form-control" name="price" placeholder="Giá" step="0.01" required>
+        </div>
+        <div class="col">
+            <input type="number" class="form-control" name="quantity" placeholder="Số lượng" required>
+        </div>
+
+        <!-- Select: Danh mục -->
+        <div class="col">
+            <select class="form-select" name="categoryId" required>
+                <option value="">-- Chọn danh mục --</option>
+                <option th:each="c : ${categories}"
+                        th:value="${c.id}"
+                        th:text="${c.name}"></option>
+            </select>
+        </div>
+
+        <!-- Select: Nhà cung cấp -->
+        <div class="col">
+            <select class="form-select" name="supplierId" required>
+                <option value="">-- Chọn nhà cung cấp --</option>
+                <option th:each="s : ${suppliers}"
+                        th:value="${s.id}"
+                        th:text="${s.name}"></option>
+            </select>
+        </div>
+
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Thêm</button>
+        </div>
+    </div>
+</form>

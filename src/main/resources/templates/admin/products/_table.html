@@ -1,0 +1,47 @@
+<table th:fragment="_table" class="table table-bordered text-center align-middle">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Tên</th>
+        <th>Giá</th>
+        <th>Số lượng</th>
+        <th>Danh mục</th>
+        <th>Nhà cung cấp</th>
+        <th>Thao tác</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="p : ${products}">
+        <td th:text="${p.id}"></td>
+        <td th:text="${p.name}"></td>
+        <td th:text="${#numbers.formatDecimal(p.price, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></td>
+        <td th:text="${p.quantity}"></td>
+        <td th:text="${p.category}"></td>
+        <td th:text="${p.supplier}"></td>
+        <td>
+            <a th:href="@{'/admin/products/edit/' + ${p.id}}" class="btn btn-warning btn-sm">Edit</a>
+            <a th:href="@{'/admin/products/delete/' + ${p.id}}" class="btn btn-danger btn-sm">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Pagination -->
+<nav th:if="${totalPages > 1}">
+    <ul class="pagination justify-content-center mt-3">
+        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+            <a class="page-link" th:href="@{|/admin/products?page=${currentPage - 1}|}">Trước</a>
+        </li>
+
+        <li class="page-item"
+            th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+            th:classappend="${i == currentPage} ? 'active'">
+            <a class="page-link" th:text="${i + 1}"
+               th:href="@{|/admin/products?page=${i}|}"></a>
+        </li>
+
+        <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
+            <a class="page-link" th:href="@{|/admin/products?page=${currentPage + 1}|}">Sau</a>
+        </li>
+    </ul>
+</nav>
