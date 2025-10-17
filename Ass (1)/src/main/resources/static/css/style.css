@@ -1,0 +1,335 @@
+body {
+    padding-top: 70px;
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Navbar */
+.navbar {
+    background: linear-gradient(90deg, #1a1d21, #2c3036);
+    padding: 15px 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-brand {
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover {
+    transform: scale(1.05);
+}
+
+.nav-link {
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 10px 15px !important;
+    transition: all 0.3s ease;
+}
+
+.nav-link.active,
+.nav-link:hover {
+    color: #dc3545 !important;
+    font-weight: 600;
+    text-shadow: 0 0 5px rgba(220, 53, 69, 0.6);
+}
+
+/* Search Bar */
+.search-container {
+    position: relative;
+    flex-grow: 1;
+}
+
+.search-input {
+    border-radius: 25px;
+    padding-left: 40px;
+    border: 1px solid #dc3545;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    box-shadow: 0 0 8px rgba(220, 53, 69, 0.4);
+    border-color: #b02a37;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #dc3545;
+    font-size: 1.1rem;
+}
+
+/* Navbar Buttons */
+.btn-cart, .btn-account {
+    border-radius: 25px;
+    padding: 8px 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-cart:hover, .btn-account:hover {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
+}
+
+.btn-cart .badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+}
+
+/* Hero */
+.hero {
+    position: relative;
+    height: 600px; /* Tăng chiều cao để làm nổi bật banner */
+    overflow: hidden;
+}
+
+.carousel-item {
+    height: 600px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    transition: transform 0.5s ease, opacity 0.5s ease; /* Hiệu ứng chuyển động mượt mà */
+}
+
+.carousel-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)); /* Gradient nhẹ thay vì overlay tối */
+}
+
+.carousel-caption {
+    padding-bottom: 100px; /* Tăng khoảng cách dưới để cân đối */
+}
+
+.carousel-caption h1 {
+    font-size: 3rem; /* Tăng kích thước chữ */
+    color: #fff;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.6);
+    animation: fadeInUp 1s ease-out;
+}
+
+.carousel-caption p {
+    font-size: 1.5rem;
+    color: #f8f9fa;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+    animation: fadeInUp 1.2s ease-out;
+}
+
+.animated-text {
+    opacity: 0;
+    animation-fill-mode: forwards; /* Giữ trạng thái cuối của animation */
+}
+
+.animated-button {
+    opacity: 0;
+    animation: fadeInUp 1.4s ease-out forwards;
+    border-radius: 25px;
+    padding: 12px 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.animated-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+}
+
+.carousel-control-prev, .carousel-control-next {
+    width: 5%;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.3s ease;
+}
+
+.carousel-control-prev:hover, .carousel-control-next:hover {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    filter: drop-shadow(0 0 8px rgba(220, 53, 69, 0.8));
+}
+
+/* Product card */
+.product-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    background: white;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-body h5 {
+    font-size: 1.1rem;
+    color: #212529;
+    min-height: 48px;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #dc3545;
+}
+
+.btn-dark {
+    background-color: #dc3545;
+    border: none;
+}
+
+.btn-dark:hover {
+    background-color: #b02a37;
+}
+
+/* Cart Modal */
+.cart-items {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.cart-item {
+    transition: background-color 0.2s;
+}
+
+.cart-item:hover {
+    background-color: #f8f9fa;
+}
+
+.cart-item .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.9rem;
+}
+
+.cart-item .btn-outline-secondary {
+    border-color: #6c757d;
+    color: #6c757d;
+}
+
+.cart-item .btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: white;
+}
+
+.cart-item .btn-danger {
+    background-color: #dc3545;
+    border: none;
+}
+
+.cart-item .btn-danger:hover {
+    background-color: #b02a37;
+}
+
+/* Footer */
+footer {
+    background: linear-gradient(180deg, #212529, #1a1d21);
+    color: #bbb;
+    padding: 40px 0 10px;
+}
+
+footer h5 {
+    font-size: 1.25rem;
+    letter-spacing: 0.5px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+footer h5::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 2px;
+    background-color: #dc3545;
+}
+
+footer p, footer li {
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+footer .social-icons a {
+    color: #dc3545;
+    margin-right: 15px;
+    font-size: 1.8rem;
+    transition: all 0.3s ease;
+    transform: scale(1);
+}
+
+footer .social-icons a:hover {
+    color: #fff;
+    transform: scale(1.2);
+    text-shadow: 0 0 8px rgba(220, 53, 69, 0.6);
+}
+
+footer .bg-dark {
+    background-color: #1a1d21 !important;
+}
+
+footer small {
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+.dropdown-menu {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: #fff;
+    padding: 10px 0;
+    animation: fadeIn 0.2s ease-in;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    font-weight: 500;
+    color: #333;
+    border-radius: 5px;
+    margin: 0;
+    width: 100%;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background: #dc3545;
+    color: #fff;
+}
+
+.dropdown-item i {
+    margin-right: 10px;
+    color: #dc3545;
+    transition: color 0.5s ease;
+}
+
+.dropdown-item:hover i {
+    color: #fff;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
