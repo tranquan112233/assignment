@@ -8,7 +8,9 @@ import org.springframework.data.domain.*;
 import poly.edu.ass_sof3022.dao.CategoryDAO;
 import poly.edu.ass_sof3022.dao.ProductDAO;
 import poly.edu.ass_sof3022.dao.SupplierDAO;
+import poly.edu.ass_sof3022.model.Category;
 import poly.edu.ass_sof3022.model.Product;
+import poly.edu.ass_sof3022.model.Supplier;
 
 import java.util.*;
 
@@ -42,7 +44,10 @@ public class ProductController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", productPage.getTotalPages());
         model.addAttribute("keyword", keyword);
-        model.addAttribute("product", new Product());
+        Product product = new Product();
+        product.setCategory(new Category());
+        product.setSupplier(new Supplier());
+        model.addAttribute("product", product);
 
         // Load danh mục & nhà cung cấp cho select box
         model.addAttribute("categories", categoryDAO.findAll());
@@ -53,7 +58,7 @@ public class ProductController {
 
     // 💾 LƯU (THÊM HOẶC CẬP NHẬT)
     @PostMapping("/save")
-    public String saveSupplier(@ModelAttribute("supplier") Product product) {
+    public String saveSupplier(@ModelAttribute("product") Product product) {
         dao.save(product);
         return "redirect:/admin/products";
     }

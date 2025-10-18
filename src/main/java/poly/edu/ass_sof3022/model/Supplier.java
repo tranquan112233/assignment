@@ -16,7 +16,7 @@ public class Supplier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mancc")
-    private int id;
+    private Integer id;
     @Column(name = "tenncc")
     private String name;
     @Column(name = "diachi")
