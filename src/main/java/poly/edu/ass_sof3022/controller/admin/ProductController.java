@@ -1,48 +1,89 @@
 package poly.edu.ass_sof3022.controller.admin;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.*;
+import poly.edu.ass_sof3022.dao.CategoryDAO;
+import poly.edu.ass_sof3022.dao.ProductDAO;
+import poly.edu.ass_sof3022.dao.SupplierDAO;
+import poly.edu.ass_sof3022.model.Product;
+
 import java.util.*;
 
 @Controller
 @RequestMapping("/admin/products")
 public class ProductController {
+    @Autowired
+    ProductDAO dao;
 
-    private List<Map<String, Object>> productList = new ArrayList<>();
+    @Autowired
+    CategoryDAO categoryDAO;
 
-    public ProductController() {
-        // Tạo dữ liệu giả để test
-        for (int i = 1; i <= 35; i++) {
-            Map<String, Object> p = new HashMap<>();
-            p.put("id", i);
-            p.put("name", "Sản phẩm " + i);
-            p.put("price", 10000 + i * 1000);
-            p.put("quantity", 10 + i);
-            p.put("category", "Danh mục " + ((i % 3) + 1));
-            p.put("supplier", "Nhà cung cấp " + ((i % 2) + 1));
-            productList.add(p);
-        }
-    }
+    @Autowired
+    SupplierDAO supplierDAO;
 
-    // 📄 Hiển thị danh sách sản phẩm có phân trang
     @GetMapping
     public String listProducts(Model model,
                                @RequestParam(defaultValue = "0") int page,
-                               @RequestParam(defaultValue = "10") int size) {
+                               @RequestParam(defaultValue = "10") int size,
+                               @RequestParam(required = false) String keyword){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Product> productPage;
 
-        int start = page * size;
-        int end = Math.min((start + size), productList.size());
-        List<Map<String, Object>> pageContent = productList.subList(start, end);
-
-        Page<Map<String, Object>> productPage =
-                new PageImpl<>(pageContent, PageRequest.of(page, size), productList.size());
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            productPage = dao.findAllWithRelations(keyword, pageable);
+        } else {
+            productPage = dao.findAll(pageable);
+        }
 
         model.addAttribute("products", productPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", productPage.getTotalPages());
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("product", new Product());
+
+        // Load danh mục & nhà cung cấp cho select box
+        model.addAttribute("categories", categoryDAO.findAll());
+        model.addAttribute("suppliers", supplierDAO.findAll());
 
         return "admin/products/index";
+    }
+
+    // 💾 LƯU (THÊM HOẶC CẬP NHẬT)
+    @PostMapping("/save")
+    public String saveSupplier(@ModelAttribute("supplier") Product product) {
+        dao.save(product);
+        return "redirect:/admin/products";
+    }
+
+    // ✏️ SỬA - HIỂN THỊ LÊN FORM
+    @GetMapping("/edit/{id}")
+    public String editProduct(@PathVariable("id") Integer id, Model model,
+                               @RequestParam(defaultValue = "0") int page,
+                               @RequestParam(defaultValue = "10") int size) {
+
+        Optional<Product> optional = dao.findById(id);
+        Product product = optional.orElseGet(Product::new);
+
+        Page<Product> productPage = dao.findAll(PageRequest.of(page, size));
+        model.addAttribute("products", productPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productPage.getTotalPages());
+        model.addAttribute("product", product);
+
+        // Load danh mục & nhà cung cấp cho select box
+        model.addAttribute("categories", categoryDAO.findAll());
+        model.addAttribute("suppliers", supplierDAO.findAll());
+
+        return "admin/products/index";
+    }
+
+    // ❌ XÓA
+    @GetMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable("id") Integer id) {
+        dao.deleteById(id);
+        return "redirect:/admin/products";
     }
 }

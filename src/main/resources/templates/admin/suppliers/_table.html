@@ -1,71 +1,68 @@
 <!-- Ô tìm kiếm -->
-<form class="d-flex mb-3" th:action="@{/admin/products}" method="get">
+<form class="d-flex mb-3" th:action="@{/admin/suppliers}" method="get">
     <input type="text" name="keyword" class="form-control me-2 w-25"
-           placeholder="Tìm sản phẩm..." th:value="${keyword}">
+           placeholder="Tìm nhà cung cấp..." th:value="${keyword}">
     <button type="submit" class="btn btn-primary me-2">
         <i class="bi bi-search"></i> Tìm
     </button>
 </form>
 
-<!-- Bảng danh sách sản phẩm -->
+<!-- Bảng danh sách nhà cung cấp -->
 <div class="table-responsive shadow-sm rounded-3">
     <table class="table table-hover table-striped align-middle text-center mb-0">
         <thead class="table-secondary">
         <tr>
             <th scope="col"><i class="bi bi-hash"></i></th>
-            <th scope="col"><i class="bi bi-box-seam"></i> Tên sản phẩm</th>
-            <th scope="col"><i class="bi bi-cash-stack"></i> Giá</th>
-            <th scope="col"><i class="bi bi-123"></i> Số lượng</th>
-            <th scope="col"><i class="bi bi-tags"></i> Danh mục</th>
-            <th scope="col"><i class="bi bi-truck"></i> Nhà cung cấp</th>
+            <th scope="col"><i class="bi bi-building"></i> Tên nhà cung cấp</th>
+            <th scope="col"><i class="bi bi-geo-alt"></i> Địa chỉ</th>
+            <th scope="col"><i class="bi bi-telephone"></i> Điện thoại</th>
+            <th scope="col"><i class="bi bi-envelope"></i> Email</th>
             <th scope="col"><i class="bi bi-gear"></i> Thao tác</th>
         </tr>
         </thead>
-
         <tbody>
-        <tr th:each="p, st : ${products}">
+        <tr th:each="s, st : ${suppliers}">
             <td th:text="${st.index + 1 + currentPage * 10}"></td>
-            <td th:text="${p.name}"></td>
-            <td th:text="${#numbers.formatDecimal(p.price, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></td>
-            <td th:text="${p.quantity}"></td>
-            <td th:text="${p.category.name}"></td>
-            <td th:text="${p.supplier.name}"></td>
+            <td th:text="${s.name}"></td>
+            <td th:text="${s.address}"></td>
+            <td th:text="${s.phone}"></td>
+            <td th:text="${s.email}"></td>
             <td>
                 <!-- Nút sửa -->
-                <a th:href="@{'/admin/products/edit/' + ${p.id}}"
+                <a th:href="@{'/admin/suppliers/edit/' + ${s.id}}"
                    class="btn btn-sm btn-warning me-1">
                     <i class="bi bi-pencil-square"></i> Sửa
                 </a>
 
                 <!-- Nút mở modal xác nhận xóa -->
                 <button type="button" class="btn btn-sm btn-danger"
-                        th:attr="data-bs-toggle='modal', data-bs-target='#deleteModal__' + ${p.id}">
+                        th:attr="data-bs-toggle='modal', data-bs-target='#deleteModal__' + ${s.id}">
                     <i class="bi bi-trash"></i> Xóa
                 </button>
 
                 <!-- Modal xác nhận xóa -->
-                <div class="modal fade" th:id="'deleteModal__' + ${p.id}" tabindex="-1"
-                     th:attr="aria-labelledby='deleteLabel__' + ${p.id}" aria-hidden="true">
+                <div class="modal fade" th:id="'deleteModal__' + ${s.id}" tabindex="-1"
+                     th:attr="aria-labelledby='deleteLabel__' + ${s.id}" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content border-0 shadow-lg">
                             <div class="modal-header bg-danger text-white">
-                                <h5 class="modal-title" th:id="'deleteLabel__' + ${p.id}">
+                                <h5 class="modal-title" th:id="'deleteLabel__' + ${s.id}">
                                     <i class="bi bi-exclamation-triangle"></i> Xác nhận xóa
                                 </h5>
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                             </div>
 
                             <div class="modal-body">
-                                <p>Bạn có chắc muốn xóa sản phẩm
-                                    <strong th:text="${p.name}">Tên sản phẩm</strong>
-                                    (ID: <span th:text="${p.id}"></span>) không?</p>
+                                <p>Bạn có chắc muốn xóa nhà cung cấp
+                                    <strong th:text="${s.name}">Tên nhà cung cấp</strong>
+                                    (ID: <span th:text="${s.id}"></span>) không?</p>
                             </div>
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                                     Hủy
                                 </button>
-                                <a th:href="@{'/admin/products/delete/' + ${p.id}}" class="btn btn-danger">
+                                <a th:href="@{'/admin/suppliers/delete/' + ${s.id}}" class="btn btn-danger">
                                     <i class="bi bi-trash"></i> Xóa
                                 </a>
                             </div>
@@ -75,9 +72,9 @@
             </td>
         </tr>
 
-        <tr th:if="${#lists.isEmpty(products)}">
-            <td colspan="7" class="text-muted py-3">
-                <i class="bi bi-exclamation-circle"></i> Không tìm thấy sản phẩm nào.
+        <tr th:if="${#lists.isEmpty(suppliers)}">
+            <td colspan="6" class="text-muted py-3">
+                <i class="bi bi-exclamation-circle"></i> Không tìm thấy nhà cung cấp nào.
             </td>
         </tr>
         </tbody>
@@ -90,8 +87,8 @@
         <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
             <a class="page-link"
                th:href="${keyword != null && keyword != '' ?
-                  '/admin/products?page=' + (currentPage - 1) + '&keyword=' + keyword :
-                  '/admin/products?page=' + (currentPage - 1)}">
+                  '/admin/suppliers?page=' + (currentPage - 1) + '&keyword=' + keyword :
+                  '/admin/suppliers?page=' + (currentPage - 1)}">
                 <i class="bi bi-chevron-left"></i> Trước
             </a>
         </li>
@@ -102,15 +99,15 @@
             <a class="page-link"
                th:text="${i + 1}"
                th:href="${keyword != null && keyword != '' ?
-                  '/admin/products?page=' + i + '&keyword=' + keyword :
-                  '/admin/products?page=' + i}"></a>
+                  '/admin/suppliers?page=' + i + '&keyword=' + keyword :
+                  '/admin/suppliers?page=' + i}"></a>
         </li>
 
         <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
             <a class="page-link"
                th:href="${keyword != null && keyword != '' ?
-                  '/admin/products?page=' + (currentPage + 1) + '&keyword=' + keyword :
-                  '/admin/products?page=' + (currentPage + 1)}">
+                  '/admin/suppliers?page=' + (currentPage + 1) + '&keyword=' + keyword :
+                  '/admin/suppliers?page=' + (currentPage + 1)}">
                 Sau <i class="bi bi-chevron-right"></i>
             </a>
         </li>

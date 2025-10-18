@@ -14,10 +14,10 @@
     <!-- Content -->
     <div class="flex-grow-1 p-4 d-flex flex-column">
         <div th:replace="~{admin/layout/header}"></div>
-        <div class="content-scroll">
+        <div class="container content-scroll">
             <div th:replace="${content}">CONTENT</div>
-            <div th:replace="~{admin/layout/footer}"></div>
         </div>
+        <div th:replace="~{admin/layout/footer}"></div>
     </div>
 </div>
 
