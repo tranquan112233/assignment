@@ -40,33 +40,5 @@ public class UserController {
         model.addAttribute("user", new User());
         return "admin/user/index";
     }
-
-    //Nút lưu bao gồm thêm hoặc cập nhật
-    @PostMapping("/save")
-    public String save(@ModelAttribute User user) {
-        userDAO.save(user);
-        return "redirect:/admin/user";
-    }
-
-    //Nút sửa
-    @GetMapping("/edit/{id}")
-    public String editUser(Model model, @PathVariable("id") Integer id,
-                           @RequestParam(defaultValue = "0") int page,
-                           @RequestParam(defaultValue = "10") int size) {
-        Optional<User> userOptional = userDAO.findById(id);
-        User user = userOptional.orElseGet(User::new);
-        Page<User> userPage = userDAO.findAll(PageRequest.of(page, size));
-        model.addAttribute("users", userPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", userPage.getTotalPages());
-        model.addAttribute("user", user);
-        return "admin/user/edit";
-    }
-
-    @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") Integer id) {
-        userDAO.deleteById(id);
-        return "redirect:/admin/user";
-    }
 }
 

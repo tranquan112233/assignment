@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class User {
     @Column (name = "dienthoai")
     private String phonenumber;
 
-    @OneToMany
-    private List<Address> Address;
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @ToString.Exclude
+    private List<Address> addresses;
 }
