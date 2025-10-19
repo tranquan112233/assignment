@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -13,10 +14,13 @@ import lombok.NoArgsConstructor;
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column (name = "madc")
+    private Integer id;
+    @Column (name = "diachi")
     private String address;
 
     @ManyToOne
-    @JoinColumn (name = "MAND")
+    @JoinColumn (name = "mand")
+    @ToString.Exclude
     private User user;
 }

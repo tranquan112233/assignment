@@ -27,48 +27,74 @@
             <td th:text="${u.password}"></td>
             <td th:text="${u.phonenumber}"></td>
             <td>
-                <!-- Nút sửa -->
-                <a th:href="@{'/admin/user/edit/' + ${u.id}}"
-                   class="btn btn-sm btn-warning me-1">
-                    <i class="bi bi-pencil-square"></i> Sửa
-                </a>
-
-                <!-- Nút mở modal xác nhận xóa -->
-                <button type="button" class="btn btn-sm btn-danger"
-                        th:attr="data-bs-toggle='modal', data-bs-target='#deleteModal__' + ${u.id}">
-                    <i class="bi bi-trash"></i> Xóa
+                <!-- Nút mở modal -->
+                <button type="button" class="btn btn-sm btn-warning me-1"
+                        data-bs-toggle="modal"
+                        th:data-bs-target="'#userInfoModal__' + ${u.id}">
+                    <i class="bi bi-ticket-detailed"></i> Xem chi tiết
                 </button>
 
-                <!-- Modal xác nhận xóa -->
-                <div class="modal fade" th:id="'deleteModal__' + ${u.id}" tabindex="-1"
-                     th:attr="aria-labelledby='deleteLabel__' + ${u.id}" aria-hidden="true">
+                <!-- Modal hiển thị thông tin người dùng -->
+                <div class="modal fade"
+                     th:id="'userInfoModal__' + ${u.id}"
+                     tabindex="-1"
+                     th:attr="aria-labelledby='userInfoLabel__' + ${u.id}"
+                     aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content border-0 shadow-lg">
-                            <div class="modal-header bg-danger text-white">
-                                <h5 class="modal-title" th:id="'deleteLabel__' + ${u.id}">
-                                <i class="bi bi-exclamation-triangle"></i> Xác nhận xóa
+                            <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title" th:id="'userInfoLabel__' + ${u.id}">
+                                    <i class="bi bi-person-circle"></i> Thông tin người dùng
                                 </h5>
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                             </div>
 
-                            <div class="modal-body">
-                                <p>Bạn có chắc muốn xóa người dùng này
-                                    <strong th:text="${u.name}">Tên người dùng</strong>
-                                    (ID: <span th:text="${u.id}"></span>) không?</p>
+                            <div class="modal-body text-start">
+                                <form>
+                                    <!-- Tên người dùng -->
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">
+                                            <i class="bi bi-person-fill"></i> Tên người dùng
+                                        </label>
+                                        <input type="text" class="form-control" th:value="${u.name}" readonly>
+                                    </div>
+
+                                    <!-- Email -->
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">
+                                            <i class="bi bi-envelope-fill"></i> Email
+                                        </label>
+                                        <input type="email" class="form-control" th:value="${u.email}" readonly>
+                                    </div>
+
+                                    <!-- Số điện thoại -->
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">
+                                            <i class="bi bi-telephone-fill"></i> Số điện thoại
+                                        </label>
+                                        <input type="text" class="form-control" th:value="${u.phonenumber}" readonly>
+                                    </div>
+
+                                    <!-- Địa chỉ (nhiều địa chỉ) -->
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">
+                                            <i class="bi bi-geo-alt-fill"></i> Địa chỉ
+                                        </label>
+                                        <ul class="list-group">
+                                            <li class="list-group-item" th:each="addr : ${u.addresses}" th:text="${addr.address}"></li>
+                                        </ul>
+                                    </div>
+                                </form>
                             </div>
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                    Hủy
+                                    Đóng
                                 </button>
-                                <a th:href="@{'/admin/user/delete/' + ${u.id}}" class="btn btn-danger">
-                                    <i class="bi bi-trash"></i> Xóa
-                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
-            </td>
         </tr>
 
         <tr th:if="${#lists.isEmpty(users)}">
