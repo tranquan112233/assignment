@@ -19,12 +19,14 @@ public class Supplier {
     private Integer id;
     @Column(name = "tenncc")
     private String name;
-    @Column(name = "diachi")
-    private String address;
+
+    private String email;
+
     @Column(name = "dienthoai")
     private String phone;
 
-    private String email;
+    @Column(name = "diachi")
+    private String address;
 
     @OneToMany(mappedBy = "supplier")
     List<Product> products;

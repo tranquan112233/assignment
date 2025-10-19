@@ -26,7 +26,7 @@ public class SuppliersController {
         Page<Supplier> supplierPage;
 
         if (keyword != null && !keyword.trim().isEmpty()) {
-            supplierPage = dao.findByNameContainingIgnoreCase(keyword, pageable);
+            supplierPage = dao.searchAll(keyword, pageable);
         } else {
             supplierPage = dao.findAll(pageable);
         }
