@@ -21,14 +21,14 @@
 //     { id: 20, name: "AMD RX 7600", price: 16000000, category: "gpu amd-gpu" },
 // ];
 
-const categories = ["cpu intel", "cpu amd", "gpu nvidia", "gpu amd-gpu", "ram ddr4", "ram ddr5", "ssd nvme", "ssd hdd"];
-const products = Array.from({ length: 1000 }, (_, i) => {
-    const id = i + 1;
-    const category = categories[i % categories.length];
-    const name = `${category.toUpperCase()} Model ${id}`;
-    const price = Math.floor(Math.random() * 30000000) + 1000000;
-    return { id, name, price, category };
-});
+// const categories = ["cpu intel", "cpu amd", "gpu nvidia", "gpu amd-gpu", "ram ddr4", "ram ddr5", "ssd nvme", "ssd hdd"];
+// const products = Array.from({ length: 1000 }, (_, i) => {
+//     const id = i + 1;
+//     const category = categories[i % categories.length];
+//     const name = `${category.toUpperCase()} Model ${id}`;
+//     const price = Math.floor(Math.random() * 30000000) + 1000000;
+//     return { id, name, price, category };
+// });
 let cart = [];
 let currentPage = 1;
 const itemsPerPage = 25;
