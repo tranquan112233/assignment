@@ -31,7 +31,7 @@ public class SanPham {
     @Column(name = "MoTa", length = 255)
     private String moTa;
 
-    @Column(name = "hinhanh", length = 255)
+    @Column(name = "HinhAnh", length = 255)
     private String hinhAnh;
 
     @ManyToOne

@@ -1,11 +1,10 @@
+// Repository (DAO mới - src/main/java/poly/edu/ass/repository/SanPhamRepository.java)
 package poly.edu.ass.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import poly.edu.ass.Entity.DanhMuc;
+import org.springframework.stereotype.Repository;
 import poly.edu.ass.Entity.SanPham;
 
-import java.util.List;
-
+@Repository
 public interface SanPhamRepository extends JpaRepository<SanPham, Integer> {
-    List<SanPham> findByDanhMuc(DanhMuc danhMuc);
 }

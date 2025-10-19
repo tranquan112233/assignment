@@ -14,12 +14,11 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown" aria-expanded="false">[[#{menu.product}]]</a>
                     <ul class="dropdown-menu">
-                        <li th:each="dm : ${headerDanhMucs}">
-                            <a class="dropdown-item" th:href="@{'/danh-muc/' + ${dm.maDanhMuc}}" th:text="${dm.tenDanhMuc}"></a>
-                        </li>
-
+                        <li><a class="dropdown-item" href="#" data-filter="cpu"><i class="bi bi-cpu me-2"></i>CPU</a></li>
+                        <li><a class="dropdown-item" href="#" data-filter="gpu"><i class="bi bi-gpu-card me-2"></i>Card đồ họa</a></li>
+                        <li><a class="dropdown-item" href="#" data-filter="ram"><i class="bi bi-memory me-2"></i>RAM</a></li>
+                        <li><a class="dropdown-item" href="#" data-filter="ssd"><i class="bi bi-hdd me-2"></i>Ổ cứng</a></li>
                     </ul>
-
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-white" href="#">[[#{menu.contact}]]</a>
