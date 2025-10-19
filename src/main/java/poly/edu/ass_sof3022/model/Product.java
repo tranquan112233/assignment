@@ -17,15 +17,17 @@ public class Product {
     private Integer id;
     @Column(name = "tensp")
     private String name;
-    @Column(name = "mota")
-    private String description;
     @Column(name = "gia")
     private double price;
-    @Column(name = "soluongton")
+    @Column(name = "soluong")
     private int quantity;
+    @Column(name = "mota")
+    private String description;
+    @Column(name = "hinhanh")
+    private String image;
 
     @ManyToOne
-    @JoinColumn(name = "maloai")
+    @JoinColumn(name = "madanhmuc")
     private Category category;
 
     @ManyToOne

@@ -5,6 +5,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import poly.edu.ass_sof3022.dao.CategoryDAO;
 import poly.edu.ass_sof3022.model.Category;
 
@@ -42,10 +43,17 @@ public class CategoriesController {
         return "admin/categories/index";
     }
 
-    // 💾 LƯU (THÊM HOẶC CẬP NHẬT)
+    // 💾 LƯU (THÊM HOẶC CẬP NHẬT) với thông báo
     @PostMapping("/save")
-    public String saveCategory(@ModelAttribute("category") Category category) {
-        dao.save(category);
+    public String saveCategory(@ModelAttribute("category") Category category,
+                               RedirectAttributes redirectAttributes) {
+        try {
+            dao.save(category);
+            redirectAttributes.addFlashAttribute("successMessage", "Lưu danh mục thành công!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("errorMessage", "Đã xảy ra lỗi khi lưu danh mục!");
+        }
         return "redirect:/admin/categories";
     }
 
@@ -67,10 +75,17 @@ public class CategoriesController {
         return "admin/categories/index";
     }
 
-    // ❌ XÓA
+    // ❌ XÓA với thông báo
     @GetMapping("/delete/{id}")
-    public String deleteCategory(@PathVariable("id") Integer id) {
-        dao.deleteById(id);
+    public String deleteCategory(@PathVariable("id") Integer id,
+                                 RedirectAttributes redirectAttributes) {
+        Optional<Category> categoryOpt = dao.findById(id);
+        if (categoryOpt.isPresent()) {
+            dao.delete(categoryOpt.get());
+            redirectAttributes.addFlashAttribute("successMessage", "Xóa danh mục thành công!");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Danh mục không tồn tại!");
+        }
         return "redirect:/admin/categories";
     }
 }

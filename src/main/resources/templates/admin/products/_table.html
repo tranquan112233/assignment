@@ -30,41 +30,85 @@
             <td th:text="${p.quantity}"></td>
             <td th:text="${p.category.name}"></td>
             <td th:text="${p.supplier.name}"></td>
-            <td>
-                <!-- Nút sửa -->
+            <td class="d-flex justify-content-center gap-1">
+                <!-- 🔍 Nút xem chi tiết -->
+                <button type="button" class="btn btn-sm btn-primary text-white"
+                        th:attr="data-bs-toggle='modal', data-bs-target='#viewModal__' + ${p.id}">
+                    <i class="bi bi-eye"></i> Xem
+                </button>
+
+                <!-- ✏️ Nút sửa -->
                 <a th:href="@{'/admin/products/edit/' + ${p.id}}"
-                   class="btn btn-sm btn-warning me-1">
+                   class="btn btn-sm btn-warning text-white">
                     <i class="bi bi-pencil-square"></i> Sửa
                 </a>
 
-                <!-- Nút mở modal xác nhận xóa -->
+                <!-- ❌ Nút xóa -->
                 <button type="button" class="btn btn-sm btn-danger"
                         th:attr="data-bs-toggle='modal', data-bs-target='#deleteModal__' + ${p.id}">
                     <i class="bi bi-trash"></i> Xóa
                 </button>
 
-                <!-- Modal xác nhận xóa -->
+                <!-- 🧩 Modal xem chi tiết -->
+                <div class="modal fade" th:id="'viewModal__' + ${p.id}" tabindex="-1"
+                     aria-labelledby="viewModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content border-0 shadow-lg">
+                            <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title">
+                                    <i class="bi bi-box-seam"></i> Chi tiết sản phẩm
+                                </h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body text-start">
+                                <div class="row">
+                                    <div class="col-md-5 text-center">
+                                        <img th:src="@{|/uploads/${p.image}|}" class="img-fluid rounded shadow-sm mb-2"
+                                             alt="Hình sản phẩm" style="max-height: 250px;">
+                                    </div>
+                                    <div class="col-md-7">
+                                        <h5 th:text="${p.name}" class="fw-bold"></h5>
+                                        <p class="text-muted mb-1">
+                                            <i class="bi bi-tag"></i>
+                                            <span th:text="${p.category.name}"></span> |
+                                            <i class="bi bi-truck"></i>
+                                            <span th:text="${p.supplier.name}"></span>
+                                        </p>
+                                        <p>
+                                            <strong>Giá:</strong>
+                                            <span th:text="${#numbers.formatDecimal(p.price, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></span>
+                                        </p>
+                                        <p><strong>Số lượng còn:</strong> <span th:text="${p.quantity}"></span></p>
+                                        <hr>
+                                        <p><strong>Mô tả:</strong></p>
+                                        <p th:text="${p.description}"
+                                           style="white-space: pre-line;"
+                                           class="text-secondary"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 🗑️ Modal xác nhận xóa -->
                 <div class="modal fade" th:id="'deleteModal__' + ${p.id}" tabindex="-1"
-                     th:attr="aria-labelledby='deleteLabel__' + ${p.id}" aria-hidden="true">
+                     aria-labelledby="deleteLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content border-0 shadow-lg">
                             <div class="modal-header bg-danger text-white">
-                                <h5 class="modal-title" th:id="'deleteLabel__' + ${p.id}">
+                                <h5 class="modal-title">
                                     <i class="bi bi-exclamation-triangle"></i> Xác nhận xóa
                                 </h5>
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                             </div>
-
                             <div class="modal-body">
                                 <p>Bạn có chắc muốn xóa sản phẩm
                                     <strong th:text="${p.name}">Tên sản phẩm</strong>
                                     (ID: <span th:text="${p.id}"></span>) không?</p>
                             </div>
-
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                    Hủy
-                                </button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                                 <a th:href="@{'/admin/products/delete/' + ${p.id}}" class="btn btn-danger">
                                     <i class="bi bi-trash"></i> Xóa
                                 </a>

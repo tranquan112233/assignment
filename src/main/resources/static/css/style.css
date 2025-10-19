@@ -19,7 +19,7 @@
     flex-grow: 1;
     overflow-y: auto;
     overflow-x: hidden;
-    max-height: calc(100vh - 120px); /* 100vh trừ chiều cao header + footer */
+    max-height: calc(100vh - 140px); /* 100vh trừ chiều cao header + footer */
     padding-right: 8px; /* tránh thanh cuộn đè nội dung */
 }
 
