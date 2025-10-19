@@ -8,17 +8,17 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Entity
-@Table(name = "loaisanpham")
+@Table(name = "danhmuc")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "maloai")
+    @Column(name = "madanhmuc")
     private Integer id;
 
-    @Column(name = "tenloai")
+    @Column(name = "tendanhmuc")
     private String name;
 
     @OneToMany(mappedBy = "category")

@@ -28,7 +28,7 @@ public class CategoriesController {
         Page<Category> categoryPage;
 
         if (keyword != null && !keyword.trim().isEmpty()) {
-            categoryPage = dao.findByNameContainingIgnoreCase(keyword, pageable);
+            categoryPage = dao.searchAll(keyword, pageable);
         } else {
             categoryPage = dao.findAll(pageable);
         }
