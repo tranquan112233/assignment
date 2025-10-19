@@ -53,16 +53,16 @@ public class SuppliersController {
                                @RequestParam(defaultValue = "0") int page,
                                @RequestParam(defaultValue = "10") int size) {
 
-        Optional<Supplier> optional = dao.findById(id);
-        Supplier supplier = optional.orElseGet(Supplier::new);
+            Optional<Supplier> optional = dao.findById(id);
+            Supplier supplier = optional.orElseGet(Supplier::new);
 
-        Page<Supplier> supplierPage = dao.findAll(PageRequest.of(page, size));
-        model.addAttribute("suppliers", supplierPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", supplierPage.getTotalPages());
-        model.addAttribute("supplier", supplier);
+            Page<Supplier> supplierPage = dao.findAll(PageRequest.of(page, size));
+            model.addAttribute("suppliers", supplierPage.getContent());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", supplierPage.getTotalPages());
+            model.addAttribute("supplier", supplier);
 
-        return "admin/suppliers/index";
+            return "admin/suppliers/index";
     }
 
     // ❌ XÓA
