@@ -10,17 +10,19 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table (name = "DIACHI")
+@Table (name = "diachi")
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name = "madc")
+    @Column (name = "madiachi")
     private Integer id;
-    @Column (name = "diachi")
+    @Column (name = "diachichitiet")
     private String address;
+    @Column (name = "macdinh")
+    private boolean ísDefault;
 
     @ManyToOne
-    @JoinColumn (name = "mand")
+    @JoinColumn (name = "manguoidung")
     @ToString.Exclude
     private User user;
 }

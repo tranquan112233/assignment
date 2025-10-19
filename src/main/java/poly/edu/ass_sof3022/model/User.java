@@ -16,18 +16,28 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name = "mand")
+    @Column (name = "manguoidung")
     private int id;
-    @Column (name = "hoten")
+    @Column (name = "tennguoidung")
     private String name;
+    @Column (name = "gioitinh")
+    private boolean gender;
+    @Column (name = "dienthoai")
+    private String phonenumber;
     @Column (name = "email")
     private String email;
     @Column (name = "matkhau")
     private String password;
-    @Column (name = "dienthoai")
-    private String phonenumber;
+
+    @ManyToOne
+    @JoinColumn(name = "maquyen")
+    private Role role;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     @ToString.Exclude
     private List<Address> addresses;
+
+    public String getGenderText() {
+        return gender ? "Nam" : "Nữ";
+    }
 }
