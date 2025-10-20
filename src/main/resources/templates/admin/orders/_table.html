@@ -1,0 +1,112 @@
+<!-- Ô tìm kiếm -->
+<form class="d-flex mb-3" th:action="@{/admin/orders}" method="get">
+    <input type="text" name="keyword" class="form-control me-2 w-25"
+           placeholder="Tìm hóa đơn theo khách hàng..." th:value="${keyword}">
+    <button type="submit" class="btn btn-primary me-2">
+        <i class="bi bi-search"></i> Tìm
+    </button>
+</form>
+
+<!-- Bảng danh sách hóa đơn -->
+<div class="table-responsive shadow-sm rounded-3">
+    <table class="table table-hover table-striped align-middle text-center mb-0">
+        <thead class="table-secondary">
+        <tr>
+            <th scope="col"><i class="bi bi-hash"></i></th>
+            <th scope="col"><i class="bi bi-person"></i> Khách hàng</th>
+            <th scope="col"><i class="bi bi-calendar"></i> Ngày lập</th>
+            <th scope="col"><i class="bi bi-cash-stack"></i> Tổng tiền</th>
+            <th scope="col"><i class="bi bi-info-circle"></i> Trạng thái</th>
+            <th scope="col"><i class="bi bi-gear"></i> Thao tác</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="o, st : ${orders}">
+            <td th:text="${st.index + 1 + currentPage * 10}"></td>
+            <td th:text="${o.user.name}"></td>
+            <td th:text="${#dates.format(o.date, 'dd/MM/yyyy')}"></td>
+            <td th:text="${#numbers.formatDecimal(o.total, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></td>
+            <td>
+                <span th:text="${o.status}"
+                      th:classappend="${o.status == 'Hoàn thành'} ? 'text-success fw-bold' :
+                                      (o.status == 'Đang giao' ? 'text-primary fw-bold' :
+                                      (o.status == 'Hủy' ? 'text-danger fw-bold' : 'text-secondary'))">
+                </span>
+            </td>
+            <td class="d-flex justify-content-center gap-1">
+
+                <!-- 🔍 Nút xem chi tiết -->
+                <button type="button" class="btn btn-sm btn-primary text-white"
+                        th:attr="data-bs-toggle='modal', data-bs-target='#viewModal__' + ${o.id}">
+                    <i class="bi bi-eye"></i> Xem
+                </button>
+
+                <!-- ✏️ Nút cập nhật trạng thái -->
+                <a th:href="@{'/admin/orders/edit/' + ${o.id}}"
+                   class="btn btn-sm btn-warning text-white">
+                    <i class="bi bi-pencil-square"></i> Sửa
+                </a>
+
+                <!-- 🧾 Modal xem chi tiết -->
+                <div class="modal fade" th:id="'viewModal__' + ${o.id}" tabindex="-1"
+                     aria-labelledby="viewModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content border-0 shadow-lg">
+                            <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title">
+                                    <i class="bi bi-receipt"></i> Chi tiết hóa đơn
+                                </h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body text-start">
+                                <p><strong>Khách hàng:</strong> <span th:text="${o.user.name}"></span></p>
+                                <p><strong>Số điện thoại:</strong> <span th:text="${o.user.phonenumber}"></span></p>
+                                <p><strong>Địa chỉ:</strong> <span th:text="${o.address.address}"></span></p>
+                                <p><strong>Ngày lập:</strong> <span th:text="${#dates.format(o.date, 'dd/MM/yyyy')}"></span></p>
+                                <p><strong>Trạng thái:</strong> <span th:text="${o.status}"></span></p>
+
+                                <hr>
+
+                                <!-- Bảng chi tiết sản phẩm -->
+                                <table class="table table-bordered mt-3">
+                                    <thead class="table-secondary">
+                                    <tr>
+                                        <th>Sản phẩm</th>
+                                        <th>Số lượng</th>
+                                        <th>Đơn giá</th>
+                                        <th>Thành tiền</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="ct : ${o.orderDetails}">
+                                        <td th:text="${ct.product.name}"></td>
+                                        <td th:text="${ct.quantity}"></td>
+                                        <td th:text="${#numbers.formatDecimal(ct.price, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></td>
+                                        <td th:text="${#numbers.formatDecimal(ct.quantity * ct.price, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <h5 class="text-end">Tổng cộng:
+                                    <span th:text="${#numbers.formatDecimal(o.total, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></span>
+                                </h5>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </td>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(orders)}">
+            <td colspan="6" class="text-muted py-3">
+                <i class="bi bi-exclamation-circle"></i> Không tìm thấy hóa đơn nào.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
