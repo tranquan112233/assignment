@@ -1,0 +1,49 @@
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-primary text-white d-flex align-items-center">
+        <i class="bi bi-receipt me-2 fs-5"></i>
+        <h5 class="mb-0 flex-grow-1">Cập nhật đơn hàng</h5>
+    </div>
+
+    <div class="card-body px-4 py-3">
+        <form th:fragment="_form" th:action="@{/admin/orders/save}" method="post" th:object="${o}">
+            <!-- ID ẩn -->
+            <input type="hidden" th:field="*{id}" />
+
+            <!-- Thông tin cơ bản (readonly) -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Khách hàng</label>
+                    <input type="text" class="form-control" th:value="*{user.name}" readonly>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Địa chỉ giao hàng</label>
+                    <input type="text" class="form-control" th:value="*{address.address}" readonly>
+                </div>
+            </div>
+
+            <!-- Trạng thái và ngày lập -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Trạng thái đơn hàng</label>
+                    <select class="form-select" th:field="*{status}" required>
+                        <option value="Chờ xác nhận">Chờ xác nhận</option>
+                        <option value="Đang giao">Đang giao</option>
+                        <option value="Hoàn thành">Hoàn thành</option>
+                        <option value="Hủy">Hủy</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Ngày lập</label>
+                    <input type="date" class="form-control" th:field="*{date}" readonly>
+                </div>
+            </div>
+
+            <!-- Nút lưu -->
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save me-1"></i> Lưu
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
