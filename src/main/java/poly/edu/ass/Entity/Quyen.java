@@ -8,6 +8,12 @@
 //@Entity
 //@Table(name = "Quyen")
 //@Data
+
+//import lombok.AllArgsConstructor;
+//import lombok.NoArgsConstructor;
+//
+//@AllArgsConstructor
+//@NoArgsConstructor
 //public class Quyen {
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)

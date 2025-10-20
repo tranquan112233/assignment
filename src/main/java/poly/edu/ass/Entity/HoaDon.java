@@ -1,7 +1,9 @@
 package poly.edu.ass.Entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -10,6 +12,8 @@ import java.util.List;
 @Entity
 @Table(name = "HoaDon")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class HoaDon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

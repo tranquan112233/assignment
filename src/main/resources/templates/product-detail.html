@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${p.tenSP} + ' - PC Store'">Chi tiết sản phẩm</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <style>
+    .accent-danger { color:#dc3545 }
+    .btn-danger, .badge.bg-danger { --bs-danger:#dc3545; }
+    .thumb { width:70px;height:70px;object-fit:cover;border:1px solid #e9ecef;border-radius:.5rem;cursor:pointer }
+    .thumb.active { outline:2px solid #dc3545 }
+    .hero-photo { width:100%; border:1px solid #e9ecef; border-radius:.75rem; object-fit:contain; background:#fff }
+    .spec-table th { width:30%; background:#0f0f10; color:#f8f9fa }
+    .spec-table td, .spec-table th { border-color:#1f1f21 }
+    @media (min-width:992px){ .sticky-md { position:sticky; top:90px } }
+    .btn-tall{padding-top:.6rem;padding-bottom:.6rem}
+  </style>
+</head>
+<body class="bg-light">
+
+<!-- Header -->
+<div th:replace="~{layout/header :: header(danhMucs=${danhMucs})}"></div>
+
+<div class="container my-4">
+  <!-- breadcrumb -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a th:href="@{/}" class="text-decoration-none">Trang chủ</a></li>
+      <li class="breadcrumb-item">
+        <a th:if="${p.danhMuc != null}" th:href="@{|/danhmuc/${p.danhMuc.maDanhMuc}|}" class="text-decoration-none"
+           th:text="${p.danhMuc.tenDanhMuc}">Danh mục</a>
+        <span th:if="${p.danhMuc == null}">Danh mục</span>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page" th:text="${p.tenSP}">Chi tiết</li>
+    </ol>
+  </nav>
+
+  <div class="row g-4">
+    <!-- LEFT: gallery -->
+    <div class="col-lg-6">
+      <img class="hero-photo mb-3" id="heroImg" th:src="@{'/photos/' + ${p.hinhAnh}}" th:alt="${p.tenSP}">
+      <div class="d-flex gap-2 flex-wrap">
+        <img class="thumb active" th:src="@{'/photos/' + ${p.hinhAnh}}" th:alt="${p.tenSP}" onclick="swapHero(this)">
+      </div>
+    </div>
+
+    <!-- RIGHT: info -->
+    <div class="col-lg-6 related-products">
+      <div class="card shadow-sm sticky-md">
+        <div class="card-body">
+          <h1 class="h3 fw-bold mb-2" th:text="${p.tenSP}">Tên sản phẩm</h1>
+
+          <div class="d-flex flex-wrap gap-3 small text-muted mb-2">
+            <span>Mã SP: <strong th:text="${p.maSP}">1</strong></span>
+            <span th:if="${p.nhaCungCap != null}">
+              Nhà cung cấp: <strong th:text="${p.nhaCungCap.tenNCC}">NCC</strong>
+            </span>
+            <span th:classappend="${p.soLuong>0}? 'text-success' : 'text-danger'">
+              <i class="bi bi-check2-circle me-1" th:if="${p.soLuong>0}"></i>
+              <i class="bi bi-x-circle me-1" th:if="${p.soLuong<=0}"></i>
+              <span th:text="${p.soLuong>0 ? 'Còn hàng' : 'Hết hàng'}">Còn hàng</span>
+            </span>
+          </div>
+
+          <div class="d-flex align-items-end gap-3 mb-3">
+            <div>
+              <div class="h4 text-danger m-0" th:text="${#numbers.formatDecimal(p.gia,0,'POINT',0,'COMMA')} + 'đ'">0đ</div>
+              <span class="badge bg-danger">Ưu đãi tháng này</span>
+            </div>
+          </div>
+
+          <p class="text-secondary" th:text="${p.moTa}">Mô tả ngắn...</p>
+
+          <hr>
+
+          <!-- qty + actions -->
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="input-group" style="width:140px">
+              <button class="btn btn-outline-secondary" type="button" onclick="changeQty(-1)">−</button>
+              <input id="buyQty" type="number" class="form-control text-center" value="1" min="1">
+              <button class="btn btn-outline-secondary" type="button" onclick="changeQty(1)">+</button>
+            </div>
+
+            <button class="btn btn-outline-danger flex-grow-1"
+                    th:attr="data-id=${p.maSP}"
+                    onclick="addToCartWithQty(this.dataset.id)">
+              <i class="bi bi-cart-plus me-1"></i> Thêm vào giỏ
+            </button>
+
+            <button class="btn btn-danger flex-grow-1"
+                    th:attr="data-id=${p.maSP}, data-name=${p.tenSP}, data-price=${p.gia}"
+                    onclick="buyNowWithQty(this.dataset.id, this.dataset.name, this.dataset.price)">
+              <i class="bi bi-lightning-charge me-1"></i> Mua ngay
+            </button>
+          </div>
+
+          <div class="small text-muted">
+            <i class="bi bi-truck me-1 accent-danger"></i> Giao nhanh nội thành.
+            <i class="bi bi-shield-check ms-3 me-1 accent-danger"></i> Bảo hành chính hãng.
+            <i class="bi bi-phone ms-3 me-1 accent-danger"></i> Hotline: 1900 0000
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- tabs: mô tả / thông số / bảo hành -->
+  <div class="card mt-4 shadow-sm">
+    <div class="card-header bg-dark text-white">
+      <ul class="nav nav-tabs card-header-tabs" id="detailTabs">
+        <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabDesc">Mô tả</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabSpec">Thông số kỹ thuật</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabPolicy">Bảo hành & đổi trả</button></li>
+      </ul>
+    </div>
+    <div class="card-body tab-content">
+      <div class="tab-pane fade show active" id="tabDesc">
+        <p th:text="${p.moTa}">Mô tả dài…</p>
+      </div>
+      <div class="tab-pane fade" id="tabSpec">
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle spec-table">
+            <tbody>
+            <tr><th>Danh mục</th><td th:text="${p.danhMuc != null ? p.danhMuc.tenDanhMuc : '—'}">—</td></tr>
+            <tr><th>Nhà cung cấp</th><td th:text="${p.nhaCungCap != null ? p.nhaCungCap.tenNCC : '—'}">—</td></tr>
+            <tr><th>Mã sản phẩm</th><td th:text="${p.maSP}">—</td></tr>
+            <tr><th>Tình trạng</th><td th:text="${p.soLuong>0 ? 'Còn hàng' : 'Hết hàng'}">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="tabPolicy">
+        <ul class="mb-0">
+          <li>Đổi mới trong 7 ngày nếu lỗi nhà sản xuất.</li>
+          <li>Bảo hành theo chính sách hãng (12–36 tháng).</li>
+          <li>Hỗ trợ kỹ thuật miễn phí trọn đời.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- related -->
+  <div class="mt-5">
+    <h4 class="text-danger fw-bold mb-3">Sản phẩm liên quan</h4>
+    <div class="row g-3">
+      <div class="col-6 col-md-3" th:each="r : ${related}">
+        <div class="card h-100">
+          <img th:src="@{'/photos/' + ${r.hinhAnh}}" th:alt="${r.tenSP}" class="card-img-top">
+          <div class="card-body text-center d-flex flex-column">
+            <div class="small mb-1 text-truncate" th:text="${r.tenSP}">Tên</div>
+            <div class="fw-bold mb-2" th:text="${#numbers.formatDecimal(r.gia,0,'POINT',0,'COMMA')} + 'đ'">0đ</div>
+            <a class="btn btn-dark btn-sm mt-auto" th:href="@{|/sanpham/${r.maSP}|}">
+              Xem chi tiết
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Cart Offcanvas (fragment dùng chung) -->
+<div th:replace="~{layout/cart-offcanvas :: cart}"></div>
+
+<!-- Footer -->
+<div th:replace="~{layout/footer :: footer}"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/main.js}"></script>
+<script th:inline="javascript">
+  /*<![CDATA[*/ window.USER_ID = /*[[${session.userId}]]*/ 3; /*]]>*/
+</script>
+<script>
+  function swapHero(img){
+    document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+    img.classList.add('active');
+    const hero = document.getElementById('heroImg');
+    hero.src = img.src;
+  }
+  function changeQty(delta){
+    const input = document.getElementById('buyQty');
+    let v = parseInt(input.value || '1', 10);
+    v = Math.max(1, v + delta);
+    input.value = v;
+  }
+  async function buyNowWithQty(id,name,price){
+    const qty = Math.max(1, parseInt(document.getElementById('buyQty').value||'1',10));
+    try { await API.add(id, qty); } catch {}
+    goCheckout();
+  }
+
+
+  window.buyNowWithQty = buyNowWithQty;
+</script>
+</body>
+</html>

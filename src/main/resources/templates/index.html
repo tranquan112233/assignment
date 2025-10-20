@@ -11,15 +11,13 @@
 <body>
 
 <!-- Header -->
-<div th:replace="~{layout/header :: header}"></div>
+<div th:replace="~{layout/header :: header(danhMucs=${danhMucs})}"></div>
 
 <!-- Hero Section -->
 <section class="hero text-center position-relative">
   <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="6000">
     <div class="carousel-inner">
-
-      <div class="carousel-item active"
-           th:style="|background-image: url('@{/photos/banner1.jpg}')|">
+      <div class="carousel-item active" th:style="|background-image: url('@{/photos/banner1.jpg}')|">
         <div class="carousel-caption d-none d-md-block">
           <h1 class="display-3 fw-bold animated-text neon-text" th:text="#{hero.title}">Xây dựng PC mơ ước của bạn</h1>
           <p class="lead animated-text" th:text="#{hero.subtitle}">CPU, GPU, RAM, SSD chính hãng – Giá tốt, bảo hành uy tín</p>
@@ -28,8 +26,7 @@
         <div class="particle-overlay"></div>
       </div>
 
-      <div class="carousel-item"
-           th:style="|background-image: url('@{/photos/bannerpcstore.jpg}')|">
+      <div class="carousel-item" th:style="|background-image: url('@{/photos/bannerpcstore.jpg}')|">
         <div class="carousel-caption d-none d-md-block">
           <h1 class="display-3 fw-bold animated-text neon-text" th:text="#{hero.title}">Xây dựng PC mơ ước của bạn</h1>
           <p class="lead animated-text" th:text="#{hero.subtitle}">CPU, GPU, RAM, SSD chính hãng – Giá tốt, bảo hành uy tín</p>
@@ -38,8 +35,7 @@
         <div class="particle-overlay"></div>
       </div>
 
-      <div class="carousel-item"
-           th:style="|background-image: url('@{/photos/banner3.jpg}')|">
+      <div class="carousel-item" th:style="|background-image: url('@{/photos/banner3.jpg}')|">
         <div class="carousel-caption d-none d-md-block">
           <h1 class="display-3 fw-bold animated-text neon-text" th:text="#{hero.title}">Xây dựng PC mơ ước của bạn</h1>
           <p class="lead animated-text" th:text="#{hero.subtitle}">CPU, GPU, RAM, SSD chính hãng – Giá tốt, bảo hành uy tín</p>
@@ -48,8 +44,7 @@
         <div class="particle-overlay"></div>
       </div>
 
-      <div class="carousel-item"
-           th:style="|background-image: url('@{/photos/banner4.jpg}')|">
+      <div class="carousel-item" th:style="|background-image: url('@{/photos/banner4.jpg}')|">
         <div class="carousel-caption d-none d-md-block">
           <h1 class="display-3 fw-bold animated-text neon-text" th:text="#{hero.title}">Xây dựng PC mơ ước của bạn</h1>
           <p class="lead animated-text" th:text="#{hero.subtitle}">CPU, GPU, RAM, SSD chính hãng – Giá tốt, bảo hành uy tín</p>
@@ -57,7 +52,6 @@
         </div>
         <div class="particle-overlay"></div>
       </div>
-
     </div>
 
     <button class="carousel-control-prev custom-control" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
@@ -72,7 +66,7 @@
 </section>
 
 <!-- Product Section -->
-<div class="container my-5">
+<div class="container my-5 ">
   <h2 class="text-center mb-4 text-danger fw-bold" th:text="#{product.featured}">Sản phẩm nổi bật</h2>
 
   <div id="products" class="row g-4">
@@ -82,39 +76,39 @@
         <div class="card-body text-center d-flex flex-column">
           <h5 class="card-title" th:text="${p.tenSP}">Tên sản phẩm</h5>
           <p class="card-text fw-bold" th:text="${#numbers.formatDecimal(p.gia, 0, 'POINT', 0, 'COMMA')} + 'đ'">0đ</p>
-          <button class="btn btn-dark mt-auto"
-                  th:attr="data-id=${p.maSP}, data-name=${p.tenSP}, data-price=${p.gia}"
-                  onclick="addToCart(this.dataset.id, this.dataset.name, this.dataset.price)">
-            <i class="bi bi-cart-plus"></i> Thêm vào giỏ
-          </button>
+
+          <!-- Cụm nút -->
+          <div class="mt-auto w-100">
+            <!-- Hàng trên: Chi tiết + Mua ngay (mỗi nút 1/2) -->
+            <div class="row g-2 mb-2">
+              <div class="col-6">
+                <a class="btn btn-dark w-100 btn-tall text-nowrap" th:href="@{|/sanpham/${p.maSP}|}">
+                  <i class="bi bi-eye me-1"></i> Chi tiết
+                </a>
+              </div>
+              <div class="col-6">
+                <button class="btn btn-danger w-100 btn-tall text-nowrap"
+                        th:attr="data-id=${p.maSP}, data-name=${p.tenSP}, data-price=${p.gia}"
+                        onclick="buyNow(this.dataset.id, this.dataset.name, this.dataset.price)">
+                  <i class="bi bi-lightning-charge me-1"></i> Mua ngay
+                </button>
+              </div>
+            </div>
+            <!-- Hàng dưới: Thêm vào giỏ full width (outline đỏ) -->
+            <button class="btn btn-outline-danger w-100 btn-tall text-nowrap"
+                    th:attr="data-id=${p.maSP}, data-name=${p.tenSP}, data-price=${p.gia}"
+                    onclick="addToCart(this.dataset.id, this.dataset.name, this.dataset.price)">
+              <i class="bi bi-cart-plus me-1"></i> Thêm vào giỏ
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Cart Modal -->
-<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header bg-dark text-white">
-        <h5 class="modal-title" id="cartModalLabel"><i class="bi bi-cart3 me-2"></i>Giỏ hàng của bạn</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div id="cartItems" class="cart-items"></div>
-        <div class="d-flex justify-content-between align-items-center border-top pt-3 mt-3">
-          <h5 class="fw-bold mb-0">Tổng cộng:</h5>
-          <h5 class="fw-bold mb-0 text-danger" id="cartTotal">0đ</h5>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
-        <button type="button" class="btn btn-danger">Thanh toán</button>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- Cart Offcanvas (fragment dùng chung) -->
+<div th:replace="~{layout/cart-offcanvas :: cart}"></div>
 
 <!-- Footer -->
 <div th:replace="~{layout/footer :: footer}"></div>
@@ -122,6 +116,8 @@
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/js/main.js}"></script>
-
+<script th:inline="javascript">
+  /*<![CDATA[*/ window.USER_ID = /*[[${session.userId}]]*/ 3; /*]]>*/
+</script>
 </body>
 </html>

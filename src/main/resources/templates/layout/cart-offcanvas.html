@@ -1,0 +1,35 @@
+<!— templates/layout/cart-offcanvas.html —>
+<div th:fragment="cart">
+    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartLabel">
+        <div class="offcanvas-header border-bottom border-secondary">
+            <h5 class="offcanvas-title fw-bold" id="cartLabel">
+                <i class="bi bi-cart3 me-2 text-danger"></i>Giỏ hàng
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+
+        <div class="offcanvas-body d-flex flex-column">
+            <div id="cartAlert" class="alert alert-success py-2 px-3 d-none">
+                <i class="bi bi-check2-circle me-1"></i> Đã thêm vào giỏ.
+            </div>
+            <div id="cartBody" class="flex-grow-1">
+                <p class="text-muted text-center my-4">Giỏ hàng trống</p>
+            </div>
+            <div class="border-top border-secondary pt-3 mt-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="fw-semibold">Tổng phụ</span>
+                    <span class="fw-bold text-danger" id="cartSubtotal">0đ</span>
+                </div>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-danger btn-lg" onclick="goCheckout()">
+                        <i class="bi bi-credit-card me-2"></i>Thanh toán
+                    </button>
+                    <button class="btn btn-outline-light" onclick="clearCart()">
+                        <i class="bi bi-trash3 me-2"></i>Xoá tất cả
+                    </button>
+                </div>
+                <small class="text-muted d-block mt-2">Phí & thuế tính ở bước sau.</small>
+            </div>
+        </div>
+    </div>
+</div>

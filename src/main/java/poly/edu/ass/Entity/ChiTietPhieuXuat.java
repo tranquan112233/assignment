@@ -1,13 +1,17 @@
 package poly.edu.ass.Entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "ChiTietPhieuXuat")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ChiTietPhieuXuat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,6 +1,6 @@
 package poly.edu.ass.service.IMPL;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import poly.edu.ass.Entity.DanhMuc;
 import poly.edu.ass.repository.DanhMucRepository;
@@ -9,10 +9,9 @@ import poly.edu.ass.service.DanhMucService;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DanhMucServiceImpl implements DanhMucService {
-
-    @Autowired
-    private DanhMucRepository danhMucRepository;
+    private final DanhMucRepository danhMucRepository;
 
     @Override
     public List<DanhMuc> getAll() {

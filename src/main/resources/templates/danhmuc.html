@@ -23,23 +23,47 @@
                 <div class="card-body text-center d-flex flex-column">
                     <h5 class="card-title" th:text="${p.tenSP}">Tên sản phẩm</h5>
                     <p class="card-text fw-bold" th:text="${#numbers.formatDecimal(p.gia, 0, 'POINT', 0, 'COMMA')} + 'đ'">0đ</p>
-                    <button class="btn btn-dark mt-auto"
-                            th:attr="data-id=${p.maSP}, data-name=${p.tenSP}, data-price=${p.gia}"
-                            onclick="addToCart(this.dataset.id, this.dataset.name, this.dataset.price)">
-                        <i class="bi bi-cart-plus"></i> Thêm vào giỏ
-                    </button>
+
+                    <!-- Cụm nút -->
+                    <div class="mt-auto w-100">
+                        <!-- Hàng trên: Chi tiết + Mua ngay -->
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <a class="btn btn-dark w-100 btn-tall text-nowrap" th:href="@{|/sanpham/${p.maSP}|}">
+                                    <i class="bi bi-eye me-1"></i> Chi tiết
+                                </a>
+                            </div>
+                            <div class="col-6">
+                                <button class="btn btn-danger w-100 btn-tall text-nowrap"
+                                        th:attr="data-id=${p.maSP}, data-name=${p.tenSP}, data-price=${p.gia}"
+                                        onclick="buyNow(this.dataset.id, this.dataset.name, this.dataset.price)">
+                                    <i class="bi bi-lightning-charge me-1"></i> Mua ngay
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Hàng dưới: Thêm vào giỏ -->
+                        <button class="btn btn-outline-danger w-100 btn-tall text-nowrap"
+                                th:attr="data-id=${p.maSP}, data-name=${p.tenSP}, data-price=${p.gia}"
+                                onclick="addToCart(this.dataset.id, this.dataset.name, this.dataset.price)">
+                            <i class="bi bi-cart-plus me-1"></i> Thêm vào giỏ
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Cart Offcanvas (fragment dùng chung) -->
+<div th:replace="~{layout/cart-offcanvas :: cart}"></div>
+
 <!-- Footer -->
 <div th:replace="layout/footer :: footer"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/js/main.js}"></script>
-
-
+<script th:inline="javascript">
+    /*<![CDATA[*/ window.USER_ID = /*[[${session.userId}]]*/ 3; /*]]>*/
+</script>
 </body>
 </html>

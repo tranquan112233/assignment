@@ -1,13 +1,17 @@
 package poly.edu.ass.Entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Entity
 @Table(name = "NguoiDung")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class NguoiDung {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
