@@ -7,6 +7,12 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" th:href="@{/css/style.css}">
+  <style>
+    /* Chỉ để đảm bảo anchor-ảnh không đè nút */
+    .prod-img { height: 200px; object-fit: cover; }
+    .img-link { display:block; line-height:0; } /* không overlay */
+    .product-card img { border-top-left-radius:.5rem; border-top-right-radius:.5rem; }
+  </style>
 </head>
 <body>
 
@@ -72,14 +78,18 @@
   <div id="products" class="row g-4">
     <div class="col-sm-6 col-md-4 col-lg-3" th:each="p : ${products}">
       <div class="card product-card h-100">
-        <img th:src="@{'/photos/' + ${p.hinhAnh}}" class="card-img-top" th:alt="${p.tenSP}">
+        <!-- ẢNH CHỈ BỌC BỞI <a> TRONG KHU VỰC ẢNH, KHÔNG OVERLAY -->
+        <a class="img-link" th:href="@{|/sanpham/${p.maSP}|}">
+          <img th:src="@{'/photos/' + ${p.hinhAnh}}" class="card-img-top prod-img" th:alt="${p.tenSP}">
+        </a>
+
         <div class="card-body text-center d-flex flex-column">
-          <h5 class="card-title" th:text="${p.tenSP}">Tên sản phẩm</h5>
+          <h5 class="card-title text-truncate" th:text="${p.tenSP}">Tên sản phẩm</h5>
           <p class="card-text fw-bold" th:text="${#numbers.formatDecimal(p.gia, 0, 'POINT', 0, 'COMMA')} + 'đ'">0đ</p>
 
           <!-- Cụm nút -->
           <div class="mt-auto w-100">
-            <!-- Hàng trên: Chi tiết + Mua ngay (mỗi nút 1/2) -->
+            <!-- Hàng trên: Chi tiết + Mua ngay -->
             <div class="row g-2 mb-2">
               <div class="col-6">
                 <a class="btn btn-dark w-100 btn-tall text-nowrap" th:href="@{|/sanpham/${p.maSP}|}">
@@ -88,16 +98,14 @@
               </div>
               <div class="col-6">
                 <button class="btn btn-danger w-100 btn-tall text-nowrap"
-                        th:attr="data-id=${p.maSP}, data-name=${p.tenSP}, data-price=${p.gia}"
-                        onclick="buyNow(this.dataset.id, this.dataset.name, this.dataset.price)">
+                        th:attr="onclick=|buyNow(${p.maSP})|">
                   <i class="bi bi-lightning-charge me-1"></i> Mua ngay
                 </button>
               </div>
             </div>
-            <!-- Hàng dưới: Thêm vào giỏ full width (outline đỏ) -->
+            <!-- Hàng dưới: Thêm vào giỏ -->
             <button class="btn btn-outline-danger w-100 btn-tall text-nowrap"
-                    th:attr="data-id=${p.maSP}, data-name=${p.tenSP}, data-price=${p.gia}"
-                    onclick="addToCart(this.dataset.id, this.dataset.name, this.dataset.price)">
+                    th:attr="onclick=|addToCart(${p.maSP})|">
               <i class="bi bi-cart-plus me-1"></i> Thêm vào giỏ
             </button>
           </div>
@@ -117,7 +125,11 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/js/main.js}"></script>
 <script th:inline="javascript">
+  /*<![CDATA[*/
   /*<![CDATA[*/ window.USER_ID = /*[[${session.userId}]]*/ 3; /*]]>*/
+  // addToCart(productId) đã có trong main.js, ở đây chỉ gọi đúng chữ ký cũ
+  /*]]>*/
 </script>
 </body>
 </html>
+

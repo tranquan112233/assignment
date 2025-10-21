@@ -26,7 +26,7 @@
                         <li th:each="dm : ${danhMucs}">
                             <a class="dropdown-item d-flex align-items-center"
                                th:href="@{|/danhmuc/${dm.maDanhMuc}|}">
-                                <!-- map icon theo tên -->
+                                <!-- Ánh xạ icon theo tên danh mục -->
                                 <i class="bi me-2"
                                    th:classappend="
                      ${#strings.equalsIgnoreCase(dm.tenDanhMuc,'CPU')} ? 'bi-cpu' :
@@ -35,7 +35,10 @@
                      (${#strings.containsIgnoreCase(dm.tenDanhMuc,'SSD')} ? 'bi-hdd' :
                      (${#strings.containsIgnoreCase(dm.tenDanhMuc,'Main')} ? 'bi-motherboard' :
                      (${#strings.containsIgnoreCase(dm.tenDanhMuc,'Case')} ? 'bi-pc' :
-                     (${#strings.containsIgnoreCase(dm.tenDanhMuc,'Nguồn')} ? 'bi-plug' : 'bi-tag'))))))">
+                     (${#strings.containsIgnoreCase(dm.tenDanhMuc,'Nguồn')} ? 'bi-plug' :
+                     (${#strings.equalsIgnoreCase(dm.tenDanhMuc,'Bàn phím') or #strings.containsIgnoreCase(dm.tenDanhMuc,'phím')} ? 'bi-keyboard' :
+                     (${#strings.containsIgnoreCase(dm.tenDanhMuc,'Màn hình')} ? 'bi-display' :
+                     'bi-box'))))))))">
                                 </i>
                                 <span th:text="${dm.tenDanhMuc}">Danh mục</span>
                             </a>
@@ -44,7 +47,8 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#">[[#{menu.contact}]]</a>
+                    <!-- Giữ đúng route bạn đang dùng -->
+                    <a class="nav-link text-white" th:href="@{/thanh-ly}">Hàng thanh lý</a>
                 </li>
             </ul>
 

@@ -1,58 +1,35 @@
 package poly.edu.ass.Controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import poly.edu.ass.Entity.DanhMuc;
-import poly.edu.ass.Entity.SanPham;
+import org.springframework.web.bind.annotation.RequestParam;
 import poly.edu.ass.repository.DanhMucRepository;
-import poly.edu.ass.service.DanhMucService;
-import poly.edu.ass.service.ProductService;
-
-import java.util.List;
+import poly.edu.ass.repository.SanPhamRepository;
 
 @Controller
+@RequiredArgsConstructor
 public class HomeController {
 
-    @Autowired
-    private ProductService productService;
+    private final DanhMucRepository danhMucRepository;
+    private final SanPhamRepository sanPhamRepository;
 
-    @Autowired
-    private DanhMucService danhMucService;
+    @GetMapping({"/", "/home"})
+    public String home(Model model,
+                       @RequestParam(value = "ordered", required = false) Integer ordered) {
 
-    @Autowired
-    private DanhMucRepository danhMucRepository;
+        // Header cần danh mục
+        model.addAttribute("danhMucs", danhMucRepository.findAll());
 
-    // Trang chủ
-    @GetMapping("/")
-    public String index(Model model) {
-        List<SanPham> products = productService.getAllProducts();
-        List<DanhMuc> danhMucs = danhMucService.getAll();
+        // CHỈ HIỆN SẢN PHẨM "NEW" = tên KHÔNG chứa "đã sử dụng"
+        model.addAttribute("products", sanPhamRepository.findAllNew());
 
-        model.addAttribute("products", products);
-        model.addAttribute("danhMucs", danhMucs);
-        model.addAttribute("products", productService.getAllProducts());
+        // nếu có toast "đặt hàng thành công" ở trang chủ
+        if (ordered != null) {
+            model.addAttribute("ordered", ordered);
+        }
 
         return "index";
     }
-
-    // Trang danh mục: ví dụ /danh-muc/1
-    @GetMapping("/danh-muc/{id}")
-    public String showByDanhMuc(@PathVariable("id") Integer id, Model model) {
-        DanhMuc dm = danhMucService.getById(id);
-        if (dm == null) return "redirect:/";
-
-        List<SanPham> products = productService.getByDanhMuc(dm);
-        List<DanhMuc> danhMucs = danhMucService.getAll();
-
-        model.addAttribute("products", products);
-        model.addAttribute("danhMucs", danhMucs);
-        model.addAttribute("danhMucs", danhMucRepository.findAll());
-
-
-        return "index"; // vẫn dùng index.html để hiển thị
-    }
-
 }

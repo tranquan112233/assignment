@@ -18,8 +18,11 @@
 
     <div id="products" class="row g-4">
         <div class="col-sm-6 col-md-4 col-lg-3" th:each="p : ${products}">
+
             <div class="card product-card h-100">
-                <img th:src="@{'/photos/' + ${p.hinhAnh}}" class="card-img-top" th:alt="${p.tenSP}">
+                <a class="img-link" th:href="@{|/sanpham/${p.maSP}|}">
+                    <img th:src="@{'/photos/' + ${p.hinhAnh}}" class="card-img-top prod-img" th:alt="${p.tenSP}">
+                </a>
                 <div class="card-body text-center d-flex flex-column">
                     <h5 class="card-title" th:text="${p.tenSP}">Tên sản phẩm</h5>
                     <p class="card-text fw-bold" th:text="${#numbers.formatDecimal(p.gia, 0, 'POINT', 0, 'COMMA')} + 'đ'">0đ</p>
