@@ -45,11 +45,13 @@ public class OrdersController {
         model.addAttribute("totalPages", orderPage.getTotalPages());
         model.addAttribute("keyword", keyword);
 
-        // Form trống (khi thêm mới)
-        Order newOrder = new Order();
-        newOrder.setUser(new User());
-        newOrder.setAddress(new Address());
-        model.addAttribute("o", newOrder);
+        // ✅ Chỉ tạo Order mới nếu chưa có "o" trong model (đang không sửa)
+        if (!model.containsAttribute("o")) {
+            Order newOrder = new Order();
+            newOrder.setUser(new User());
+            newOrder.setAddress(new Address());
+            model.addAttribute("o", newOrder);
+        }
 
         model.addAttribute("users", userDAO.findAll());
         model.addAttribute("addresses", addressDAO.findAll());

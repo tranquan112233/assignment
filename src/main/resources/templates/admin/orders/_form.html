@@ -24,17 +24,20 @@
             <!-- Trạng thái và ngày lập -->
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">Trạng thái đơn hàng</label>
-                    <select class="form-select" th:field="*{status}" required>
-                        <option value="Chờ xác nhận">Chờ xác nhận</option>
-                        <option value="Đang giao">Đang giao</option>
-                        <option value="Hoàn thành">Hoàn thành</option>
-                        <option value="Hủy">Hủy</option>
+                    <label class="form-label fw-semibold">Trạng thái    đơn hàng</label>
+                    <select class="form-select" name="status">
+                        <option th:selected="${o.status == 'Chờ xác nhận'}" value="Chờ xác nhận">Chờ xác nhận</option>
+                        <option th:selected="${o.status == 'Đang giao'}" value="Đang giao">Đang giao</option>
+                        <option th:selected="${o.status == 'Hoàn thành'}" value="Hoàn thành">Hoàn thành</option>
+                        <option th:selected="${o.status == 'Hủy'}" value="Hủy">Hủy</option>
+                        <option th:selected="${o.status == 'Đã thanh toán'}" value="Đã thanh toán">Đã thanh toán</option>
                     </select>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">Ngày lập</label>
-                    <input type="date" class="form-control" th:field="*{date}" readonly>
+                    <input type="date" class="form-control"
+                           th:value="${#dates.format(o.date, 'yyyy-MM-dd')}"
+                           readonly>
                 </div>
             </div>
 
