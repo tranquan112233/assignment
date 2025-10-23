@@ -1,0 +1,123 @@
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-success text-white d-flex align-items-center">
+        <i class="bi bi-file-earmark-text me-2 fs-5"></i>
+        <h5 class="mb-0 flex-grow-1">Thêm / Cập nhật Phiếu Nhập</h5>
+    </div>
+
+    <div class="card-body px-4 py-3">
+        <form th:fragment="_form" th:action="@{/admin/goodsreceipt/save}"
+              method="post" th:object="${goodsReceipt}">
+            <!-- ID tự sinh -->
+            <input type="hidden" th:field="*{id}" />
+
+            <!-- 🧾 Thông tin phiếu nhập -->
+            <div class="row mb-3">
+                <!-- ✅ Nhà cung cấp -->
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Nhà cung cấp</label>
+                    <select class="form-select" name="supplier">
+                        <option value="" disabled selected>-- Chọn nhà cung cấp --</option>
+                        <option th:each="s : ${suppliers}"
+                                th:value="${s.id}"
+                                th:text="${s.name}"
+                                th:selected="${goodsReceipt.supplier != null and s.id == goodsReceipt.supplier.id}">
+                        </option>
+                    </select>
+                </div>
+
+                <!-- ✅ Ngày nhập -->
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Ngày nhập</label>
+                    <input type="date" class="form-control"
+                           th:field="*{date}" required>
+                </div>
+            </div>
+
+            <!-- ✅ Tổng tiền -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Tổng tiền (VNĐ)</label>
+                    <input type="number" step="0.01" class="form-control"
+                           th:field="*{totalAmount}" placeholder="Nhập tổng tiền">
+                </div>
+                <div class="col-md-6 d-flex align-items-end">
+                    <span class="text-muted fst-italic">Tổng tiền có thể tự động tính từ chi tiết phiếu nhập</span>
+                </div>
+            </div>
+
+            <!-- 🧩 Chi tiết phiếu nhập -->
+            <hr class="my-4">
+            <h5 class="mb-3 text-primary">
+                <i class="bi bi-list-check me-2"></i> Chi tiết phiếu nhập
+            </h5>
+
+            <div id="detailContainer">
+                <div class="row mb-3 detail-row">
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Sản phẩm</label>
+                        <select class="form-select" name="sanPhamIds" required>
+                            <option value="">-- Chọn sản phẩm --</option>
+                            <option th:each="sp : ${products}"
+                                    th:value="${sp.id}"
+                                    th:text="${sp.name}"></option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Số lượng</label>
+                        <input type="number" class="form-control" name="soLuongs" min="1" required>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Đơn giá (VNĐ)</label>
+                        <input type="number" step="0.01" class="form-control" name="donGias" required>
+                    </div>
+
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="button" class="btn btn-outline-danger remove-detail w-100">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ✅ Nút thêm dòng -->
+            <div class="mb-4">
+                <button type="button" id="addDetailRow" class="btn btn-outline-primary">
+                    <i class="bi bi-plus-circle me-1"></i> Thêm dòng chi tiết
+                </button>
+            </div>
+
+            <!-- ✅ Nút lưu -->
+            <div class="text-end">
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-save me-1"></i> Lưu phiếu nhập
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 🧠 Script để thêm/xóa dòng chi tiết -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const addBtn = document.getElementById('addDetailRow');
+        const container = document.getElementById('detailContainer');
+
+        addBtn.addEventListener('click', function () {
+            const newRow = container.querySelector('.detail-row').cloneNode(true);
+            newRow.querySelectorAll('input, select').forEach(el => el.value = '');
+            container.appendChild(newRow);
+        });
+
+        container.addEventListener('click', function (e) {
+            if (e.target.closest('.remove-detail')) {
+                if (container.querySelectorAll('.detail-row').length > 1) {
+                    e.target.closest('.detail-row').remove();
+                } else {
+                    alert('Phải có ít nhất một dòng chi tiết!');
+                }
+            }
+        });
+    });
+</script>

@@ -1,0 +1,120 @@
+<!-- Ô tìm kiếm -->
+<form class="d-flex mb-3" th:action="@{/admin/goodsreceipt}" method="get">
+    <input type="text" name="keyword" class="form-control me-2 w-25"
+           placeholder="Tìm phiếu nhập..." th:value="${keyword}">
+    <button type="submit" class="btn btn-primary me-2">
+        <i class="bi bi-search"></i> Tìm
+    </button>
+</form>
+
+<!-- Bảng danh sách phiếu nhập -->
+<div class="table-responsive shadow-sm rounded-3">
+    <table class="table table-hover table-striped align-middle text-center mb-0">
+        <thead class="table-secondary">
+        <tr>
+            <th>#</th>
+            <th>Nhà cung cấp</th>
+            <th>Ngày lập</th>
+            <th>Tổng tiền</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="g, st : ${goodsReceipts}">
+            <td th:text="${st.index + 1 + currentPage * 10}"></td>
+            <td th:text="${g.supplier.name}"></td>
+            <td th:text="${#dates.format(g.date, 'dd/MM/yyyy')}"></td>
+            <td th:text="${g.totalAmount != null} ? ${#numbers.formatDecimal(g.totalAmount, 0, '.', 0, ',')} : '0 ₫'"></td>
+
+            <td class="d-flex justify-content-center gap-1">
+                <!-- 🔍 Xem chi tiết -->
+                <button type="button" class="btn btn-sm btn-primary text-white"
+                        th:attr="data-bs-toggle='modal', data-bs-target='#viewModal__' + ${g.id}">
+                    <i class="bi bi-eye"></i> Xem
+                </button>
+
+                <!-- ✏️ Cập nhật -->
+                <a th:href="@{'/admin/goodsreceipt/edit/' + ${g.id}}"
+                   class="btn btn-sm btn-warning text-white">
+                    <i class="bi bi-pencil-square"></i> Sửa
+                </a>
+            </td>
+
+            <!-- Modal chi tiết -->
+            <div class="modal fade" th:id="'viewModal__' + ${g.id}" tabindex="-1"
+                 aria-labelledby="viewModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content border-0 shadow-lg">
+                        <div class="modal-header bg-success text-white">
+                            <h5 class="modal-title">
+                                <i class="bi bi-box-arrow-in-down"></i> Chi tiết phiếu nhập
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body text-start">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><strong>Mã phiếu nhập:</strong> <span th:text="${g.id}"></span></p>
+                                    <p><strong>Nhà cung cấp:</strong> <span th:text="${g.supplier.name}"></span></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Ngày nhập:</strong> <span th:text="${#dates.format(g.date, 'dd/MM/yyyy')}"></span></p>
+                                    <p><strong>Tổng tiền:</strong>
+                                        <span th:text="${g.totalAmount != null} ? ${#numbers.formatDecimal(g.totalAmount, 0, '.', 0, ',')} + ' ₫' : '0 ₫'"></span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <!-- Bảng chi tiết phiếu nhập -->
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover mt-3">
+                                    <thead class="table-secondary text-center">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Số lượng</th>
+                                        <th>Đơn giá</th>
+                                        <th>Thành tiền</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="ct, st2 : ${g.goodsReceiptDetails}">
+                                        <td th:text="${st2.index + 1}"></td>
+                                        <td th:text="${ct.product.name}"></td>
+                                        <td class="text-center" th:text="${ct.quantity}"></td>
+                                        <td class="text-end" th:text="${#numbers.formatDecimal(ct.unitPrice, 0, '.', 0, ',')} + ' ₫'"></td>
+                                        <td class="text-end"
+                                            th:text="${#numbers.formatDecimal(ct.quantity * ct.unitPrice, 0, '.', 0, ',')} + ' ₫'"></td>
+                                    </tr>
+                                    <tr th:if="${#lists.isEmpty(g.goodsReceiptDetails)}">
+                                        <td colspan="5" class="text-center text-muted py-3">
+                                            <i class="bi bi-exclamation-circle"></i> Không có sản phẩm nào trong phiếu nhập này.
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <i class="bi bi-x-circle"></i> Đóng
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(goodsReceipts)}">
+            <td colspan="6" class="text-center text-muted py-3">
+                <i class="bi bi-exclamation-circle"></i> Không tìm thấy phiếu nhập nào.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
