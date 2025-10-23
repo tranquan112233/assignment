@@ -1,0 +1,180 @@
+<!-- Ô tìm kiếm -->
+<form class="d-flex mb-3" th:action="@{/admin/user}" method="get">
+    <input type="text" name="keyword" class="form-control me-2 w-25"
+           placeholder="Tìm người dùng..." th:value="${keyword}">
+    <button type="submit" class="btn btn-primary me-2">
+        <i class="bi bi-search"></i> Tìm
+    </button>
+</form>
+
+<!-- Bảng danh sách người dùng -->
+<div class="table-responsive shadow-sm rounded-3">
+    <table class="table table-hover table-striped align-middle text-center mb-0">
+        <thead class="table-secondary">
+        <tr>
+            <th scope="col"><i class="bi bi-hash"></i></th>
+            <th scope="col"><i class="bi bi-people"></i> Tên người dùng</th>
+            <th scope="col"><i class="bi bi-gender-ambiguous"></i> Giới tính</th>
+            <th scope="col"><i class="bi bi-telephone"></i> Số điện thoại</th>
+            <th scope="col"><i class="bi bi-envelope"></i> Email</th>
+            <th scope="col"><i class="bi bi-person"></i> Quyền</th>
+            <th scope="col"><i class="bi bi-gear"></i> Thao tác</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="u, st : ${users}">
+            <td th:text="${st.index + 1 + (currentPage != null ? currentPage * 10 : 0)}"></td>
+            <td th:text="${u.name}"></td>
+            <td th:text="${u.genderText}"></td>
+            <td th:text="${u.phonenumber}"></td>
+            <td th:text="${u.email}"></td>
+            <td th:text="${u.role.name}"></td>
+            <td>
+
+                <!-- Nút mở modal -->
+                <button type="button" class="btn btn-sm btn-warning me-1"
+                        data-bs-toggle="modal"
+                        th:data-bs-target="'#userInfoModal__' + ${u.id}">
+                    <i class="bi bi-ticket-detailed"></i> Xem chi tiết
+                </button>
+
+                <!-- Nút sửa -->
+                <a th:href="@{'/admin/user/edit/' + ${u.id}}"
+                   class="btn btn-sm btn-danger me-1">
+                    <i class="bi bi-pencil-square"></i> Sửa
+                </a>
+
+                <!-- Modal hiển thị thông tin người dùng -->
+                <div class="modal fade"
+                     th:id="'userInfoModal__' + ${u.id}"
+                     tabindex="-1"
+                     th:attr="aria-labelledby='userInfoLabel__' + ${u.id}"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content border-0 shadow-xl rounded-4 overflow-hidden">
+
+                            <!-- Header -->
+                            <div class="modal-header bg-gradient bg-primary text-white border-0">
+                                <h5 class="modal-title mb-0" th:id="'userInfoLabel__' + ${u.id}">
+                                    <i class="bi bi-person-circle me-2"></i> Thông tin người dùng
+                                </h5>
+                                <button type="button" class="btn-close btn-close-white"
+                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+
+                            <!-- Body -->
+                            <div class="modal-body p-4 text-start ps-4">
+
+                                <!-- Tên người dùng -->
+                                <div class="mb-3">
+                                    <span class="fw-bold text-muted">
+                                        <i class="bi bi-person-fill me-2 text-primary"></i>Tên người dùng:
+                                    </span>
+                                    <span class="ms-2 fs-6" th:text="${u.name}"></span>
+                                </div>
+
+                                <!-- Giới tính -->
+                                <div class="mb-3">
+                                    <span class="fw-bold text-muted">
+                                        <i class="bi bi-gender-ambiguous me-2 text-primary"></i>Giới tính:
+                                    </span>
+                                    <span class="ms-2 fs-6"
+                                          th:text="${u.gender == true ? 'Nam' : 'Nữ'}"></span>
+                                </div>
+
+                                <!-- Số điện thoại -->
+                                <div class="mb-3">
+                                    <span class="fw-bold text-muted">
+                                        <i class="bi bi-telephone-fill me-2 text-primary"></i>Số điện thoại:
+                                    </span>
+                                    <span class="ms-2 fs-6" th:text="${u.phonenumber}"></span>
+                                </div>
+
+                                <!-- Email -->
+                                <div class="mb-3">
+                                    <span class="fw-bold text-muted">
+                                        <i class="bi bi-envelope-fill me-2 text-primary"></i>Email:
+                                    </span>
+                                    <span class="ms-2 fs-6" th:text="${u.email}"></span>
+                                </div>
+
+                                <!-- Danh sách địa chỉ -->
+                                <div>
+                                    <span class="fw-bold text-muted d-block mb-2">
+                                        <i class="bi bi-geo-alt-fill me-2 text-primary"></i>Địa chỉ:
+                                    </span>
+                                    <div class="ps-4">
+                                        <div th:each="addr, stat : ${u.addresses}" class="mb-1">
+                                            <i class="bi bi-pin-map me-2 text-muted"></i>
+                                            <span class="fw-semibold text-primary">
+                                                Địa chỉ [[${stat.count}]]:
+                                            </span>
+                                            <span th:text="${addr.address}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="modal-footer bg-light border-0 px-4 py-3">
+                                <button type="button"
+                                        class="btn btn-outline-secondary rounded-pill px-4"
+                                        data-bs-dismiss="modal">
+                                    <i class="bi bi-x-circle me-1"></i> Đóng
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+
+        <!-- Khi không có người dùng -->
+        <tr th:if="${#lists.isEmpty(users)}">
+            <td colspan="7" class="text-muted py-3">
+                <i class="bi bi-exclamation-circle"></i> Không tìm thấy người dùng nào.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Phân trang -->
+<nav th:if="${totalPages > 1}">
+    <ul class="pagination justify-content-center mt-3">
+
+        <!-- Nút Trước -->
+        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+            <a class="page-link"
+               th:href="${keyword != null && keyword != '' ?
+                   '/admin/user?page=' + (currentPage - 1) + '&keyword=' + keyword :
+                   '/admin/user?page=' + (currentPage - 1)}">
+                <i class="bi bi-chevron-left"></i> Trước
+            </a>
+        </li>
+
+        <!-- Danh sách trang -->
+        <li class="page-item"
+            th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+            th:classappend="${i == currentPage} ? 'active'">
+            <a class="page-link"
+               th:text="${i + 1}"
+               th:href="${keyword != null && keyword != '' ?
+                   '/admin/user?page=' + i + '&keyword=' + keyword :
+                   '/admin/user?page=' + i}">
+            </a>
+        </li>
+
+        <!-- Nút Sau -->
+        <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
+            <a class="page-link"
+               th:href="${keyword != null && keyword != '' ?
+                   '/admin/user?page=' + (currentPage + 1) + '&keyword=' + keyword :
+                   '/admin/user?page=' + (currentPage + 1)}">
+                Sau <i class="bi bi-chevron-right"></i>
+            </a>
+        </li>
+    </ul>
+</nav>

@@ -1,0 +1,162 @@
+<!-- Ô tìm kiếm -->
+<form class="d-flex mb-3" th:action="@{/admin/products}" method="get">
+    <input type="text" name="keyword" class="form-control me-2 w-25"
+           placeholder="Tìm sản phẩm..." th:value="${keyword}">
+    <button type="submit" class="btn btn-primary me-2">
+        <i class="bi bi-search"></i> Tìm
+    </button>
+</form>
+
+<!-- Bảng danh sách sản phẩm -->
+<div class="table-responsive shadow-sm rounded-3">
+    <table class="table table-hover table-striped align-middle text-center mb-0">
+        <thead class="table-secondary">
+        <tr>
+            <th scope="col"><i class="bi bi-hash"></i></th>
+            <th scope="col"><i class="bi bi-box-seam"></i> Tên sản phẩm</th>
+            <th scope="col"><i class="bi bi-cash-stack"></i> Giá</th>
+            <th scope="col"><i class="bi bi-123"></i> Số lượng</th>
+            <th scope="col"><i class="bi bi-tags"></i> Danh mục</th>
+            <th scope="col"><i class="bi bi-truck"></i> Nhà cung cấp</th>
+            <th scope="col"><i class="bi bi-gear"></i> Thao tác</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="p, st : ${products}">
+            <td th:text="${st.index + 1 + currentPage * 10}"></td>
+            <td th:text="${p.name}"></td>
+            <td th:text="${#numbers.formatDecimal(p.price, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></td>
+            <td th:text="${p.quantity}"></td>
+            <td th:text="${p.category.name}"></td>
+            <td th:text="${p.supplier.name}"></td>
+            <td class="d-flex justify-content-center gap-1">
+                <!-- 🔍 Nút xem chi tiết -->
+                <button type="button" class="btn btn-sm btn-primary text-white"
+                        th:attr="data-bs-toggle='modal', data-bs-target='#viewModal__' + ${p.id}">
+                    <i class="bi bi-eye"></i> Xem
+                </button>
+
+                <!-- ✏️ Nút sửa -->
+                <a th:href="@{'/admin/products/edit/' + ${p.id}}"
+                   class="btn btn-sm btn-warning text-white">
+                    <i class="bi bi-pencil-square"></i> Sửa
+                </a>
+
+                <!-- ❌ Nút xóa -->
+                <button type="button" class="btn btn-sm btn-danger"
+                        th:attr="data-bs-toggle='modal', data-bs-target='#deleteModal__' + ${p.id}">
+                    <i class="bi bi-trash"></i> Xóa
+                </button>
+
+                <!-- 🧩 Modal xem chi tiết -->
+                <div class="modal fade" th:id="'viewModal__' + ${p.id}" tabindex="-1"
+                     aria-labelledby="viewModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content border-0 shadow-lg">
+                            <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title">
+                                    <i class="bi bi-box-seam"></i> Chi tiết sản phẩm
+                                </h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body text-start">
+                                <div class="row">
+                                    <div class="col-md-5 text-center">
+                                        <img th:src="@{|/uploads/${p.image}|}" class="img-fluid rounded shadow-sm mb-2"
+                                             alt="Hình sản phẩm" style="max-height: 250px;">
+                                    </div>
+                                    <div class="col-md-7">
+                                        <h5 th:text="${p.name}" class="fw-bold"></h5>
+                                        <p class="text-muted mb-1">
+                                            <i class="bi bi-tag"></i>
+                                            <span th:text="${p.category.name}"></span> |
+                                            <i class="bi bi-truck"></i>
+                                            <span th:text="${p.supplier.name}"></span>
+                                        </p>
+                                        <p>
+                                            <strong>Giá:</strong>
+                                            <span th:text="${#numbers.formatDecimal(p.price, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></span>
+                                        </p>
+                                        <p><strong>Số lượng còn:</strong> <span th:text="${p.quantity}"></span></p>
+                                        <hr>
+                                        <p><strong>Mô tả:</strong></p>
+                                        <p th:text="${p.description}"
+                                           style="white-space: pre-line;"
+                                           class="text-secondary"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 🗑️ Modal xác nhận xóa -->
+                <div class="modal fade" th:id="'deleteModal__' + ${p.id}" tabindex="-1"
+                     aria-labelledby="deleteLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content border-0 shadow-lg">
+                            <div class="modal-header bg-danger text-white">
+                                <h5 class="modal-title">
+                                    <i class="bi bi-exclamation-triangle"></i> Xác nhận xóa
+                                </h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Bạn có chắc muốn xóa sản phẩm
+                                    <strong th:text="${p.name}">Tên sản phẩm</strong>
+                                    (ID: <span th:text="${p.id}"></span>) không?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                <a th:href="@{'/admin/products/delete/' + ${p.id}}" class="btn btn-danger">
+                                    <i class="bi bi-trash"></i> Xóa
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(products)}">
+            <td colspan="7" class="text-muted py-3">
+                <i class="bi bi-exclamation-circle"></i> Không tìm thấy sản phẩm nào.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Phân trang -->
+<nav th:if="${totalPages > 1}">
+    <ul class="pagination justify-content-center mt-3">
+        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+            <a class="page-link"
+               th:href="${keyword != null && keyword != '' ?
+                  '/admin/products?page=' + (currentPage - 1) + '&keyword=' + keyword :
+                  '/admin/products?page=' + (currentPage - 1)}">
+                <i class="bi bi-chevron-left"></i> Trước
+            </a>
+        </li>
+
+        <li class="page-item"
+            th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+            th:classappend="${i == currentPage} ? 'active'">
+            <a class="page-link"
+               th:text="${i + 1}"
+               th:href="${keyword != null && keyword != '' ?
+                  '/admin/products?page=' + i + '&keyword=' + keyword :
+                  '/admin/products?page=' + i}"></a>
+        </li>
+
+        <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
+            <a class="page-link"
+               th:href="${keyword != null && keyword != '' ?
+                  '/admin/products?page=' + (currentPage + 1) + '&keyword=' + keyword :
+                  '/admin/products?page=' + (currentPage + 1)}">
+                Sau <i class="bi bi-chevron-right"></i>
+            </a>
+        </li>
+    </ul>
+</nav>

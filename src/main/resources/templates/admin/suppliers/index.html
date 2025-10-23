@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{/admin/layout/main::view(~{::div.content})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="content">
+    <h3>Quản lý nhà cung cấp</h3>
+    <hr>
+    <div th:replace="~{admin/suppliers/_form}"></div>
+    <hr>
+    <div th:replace="~{admin/suppliers/_table}"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{/admin/layout/main::view(~{::div.content})}">
+<body>
+<div class="content">
+    <h2 class="">Dashboard</h2>
+    <p>Chào mừng bạn đến trang quản trị!</p>
+
+    <div class="row mt-4 g-4">
+        <!-- Card 1: Tổng sản phẩm -->
+        <div class="col-md-4">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Tổng sản phẩm</h5>
+                    <p class="display-6 fw-bold" th:text="${totalProducts}">0</p>
+                    <i class="bi bi-box-seam fs-2 text-primary"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2: Tổng khách hàng -->
+        <div class="col-md-4">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title text-success">Tổng khách hàng</h5>
+                    <p class="display-6 fw-bold" th:text="${totalCustomers}">0</p>
+                    <i class="bi bi-people fs-2 text-success"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3: Doanh thu -->
+        <div class="col-md-4">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title text-warning">Doanh thu tháng</h5>
+                    <p class="display-6 fw-bold" th:text="${#numbers.formatDecimal(totalRevenue, 0, 'COMMA', 0, 'POINT')} + ' ₫'">0</p>
+                    <i class="bi bi-cash-stack fs-2 text-warning"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+</body>
+</html>

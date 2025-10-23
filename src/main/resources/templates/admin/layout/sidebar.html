@@ -1,0 +1,53 @@
+<!-- templates/admin/layout/sidebar.html -->
+<div th:fragment="sidebar">
+    <div class="sidebar d-flex flex-column flex-shrink-0 bg-dark text-white p-3"
+         style="width: 250px; min-height: 100vh;">
+        <a th:href="@{/admin/index}"
+           class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+            <i class="bi bi-shop me-2"></i><span class="fs-4">PC Store</span>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a th:href="@{/admin/dashboard}" class="nav-link text-white">
+                    <i class="bi bi-house-door me-2"></i> Dashboard
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/products}" class="nav-link text-white">
+                    <i class="bi bi-box-seam me-2"></i> Sản phẩm
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/categories}" class="nav-link text-white">
+                    <i class="bi bi-tags me-2"></i> Danh mục
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/suppliers}" class="nav-link text-white">
+                    <i class="bi bi-truck me-2"></i> Nhà cung cấp
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/user}" class="nav-link text-white">
+                    <i class="bi bi-people me-2"></i> Khách hàng
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/orders}" class="nav-link text-white">
+                    <i class="bi bi-receipt-cutoff me-2"></i> Đơn hàng
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/purchase-receipt}" class="nav-link text-white">
+                    <i class="bi bi-box-arrow-in-down me-2"></i> Phiếu nhập
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/delivery-note}" class="nav-link text-white">
+                    <i class="bi bi-box-arrow-up-right me-2"></i> Phiếu xuất
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

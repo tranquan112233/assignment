@@ -1,3 +1,4 @@
+/* body */
 body {
     padding-top: 70px;
     background-color: #f8f9fa;
@@ -88,7 +89,7 @@ body {
 /* Hero */
 .hero {
     position: relative;
-    height: 600px; /* Tăng chiều cao để làm nổi bật banner */
+    height: 600px;
     overflow: hidden;
 }
 
@@ -98,7 +99,7 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     position: relative;
-    transition: transform 0.5s ease, opacity 0.5s ease; /* Hiệu ứng chuyển động mượt mà */
+    transition: transform 0.5s ease, opacity 0.5s ease;
 }
 
 .carousel-item::before {
@@ -108,15 +109,15 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)); /* Gradient nhẹ thay vì overlay tối */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
 }
 
 .carousel-caption {
-    padding-bottom: 100px; /* Tăng khoảng cách dưới để cân đối */
+    padding-bottom: 100px;
 }
 
 .carousel-caption h1 {
-    font-size: 3rem; /* Tăng kích thước chữ */
+    font-size: 3rem;
     color: #fff;
     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.6);
     animation: fadeInUp 1s ease-out;
@@ -131,7 +132,7 @@ body {
 
 .animated-text {
     opacity: 0;
-    animation-fill-mode: forwards; /* Giữ trạng thái cuối của animation */
+    animation-fill-mode: forwards;
 }
 
 .animated-button {
@@ -148,13 +149,12 @@ body {
 }
 
 .carousel-control-prev, .carousel-control-next {
-    width: 5%;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 50%;
-    height: 60px;
     width: 60px;
+    height: 60px;
     top: 50%;
     transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
     transition: all 0.3s ease;
 }
 
@@ -290,6 +290,7 @@ footer small {
     opacity: 0.8;
 }
 
+/* Dropdown */
 .dropdown-menu {
     border: none;
     border-radius: 10px;
@@ -306,7 +307,6 @@ footer small {
     font-weight: 500;
     color: #333;
     border-radius: 5px;
-    margin: 0;
     width: 100%;
     transition: background 0.2s ease, color 0.2s ease;
 }
@@ -337,26 +337,32 @@ footer small {
         transform: translateY(0);
     }
 }
-/* Khung ảnh tỉ lệ 4:3, ảnh không cắt */
-.product-card .img-wrap{
-    position:relative;
-    width:100%;
-    aspect-ratio:4/3;     /* cần browser hiện đại, ok trên Chrome/Edge/Firefox mới */
-    background:#fff;
-    border-bottom:1px solid #eee;
-    border-top-left-radius:.5rem;
-    border-top-right-radius:.5rem;
-    display:flex; align-items:center; justify-content:center;
-    padding:6px;
-}
-.product-card .img-wrap img{
-    width:100%; height:100%;
-    object-fit:contain;   /* không cắt */
-    border-radius:.25rem;
-}
-.product-card .img-box{
+
+/* Product card image ratio */
+.product-card .img-wrap {
+    position: relative;
     width: 100%;
-    height: 220px;           /* cùng một chiều cao cho tất cả card */
+    aspect-ratio: 4/3;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    border-top-left-radius: .5rem;
+    border-top-right-radius: .5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+}
+
+.product-card .img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: .25rem;
+}
+
+.product-card .img-box {
+    width: 100%;
+    height: 220px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -364,12 +370,55 @@ footer small {
     border-radius: .75rem .75rem 0 0;
     overflow: hidden;
     padding: 8px;
-
 }
 
-.product-card .img-box img{
+.product-card .img-box img {
     max-width: 100%;
     max-height: 100%;
-    object-fit: contain;     /* quan trọng: không cắt ảnh */
+    object-fit: contain;
 }
-.product-card .card-img-top{ height:auto; object-fit: initial; }
+
+.product-card .card-img-top {
+    height: auto;
+    object-fit: initial;
+}
+
+/* Sidebar */
+.sidebar .nav-link {
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.sidebar .nav-link:hover {
+    background-color: slategray;
+    font-weight: bold;
+    transform: translateX(5px);
+}
+
+.sidebar .nav-link.active {
+    background-color: firebrick !important;
+    font-weight: bold;
+}
+
+/* Content Scroll */
+.content-scroll {
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: calc(100vh - 140px);
+    padding-right: 8px;
+}
+
+/* Scrollbar */
+.content-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.content-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(100, 100, 100, 0.3);
+    border-radius: 4px;
+}
+
+.content-scroll::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(100, 100, 100, 0.5);
+}

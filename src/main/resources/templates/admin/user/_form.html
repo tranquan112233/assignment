@@ -1,0 +1,60 @@
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-primary text-white d-flex align-items-center">
+        <i class="bi bi-truck me-2 fs-5"></i>
+        <h5 class="mb-0 flex-grow-1">Cập nhật quyền của người dùng</h5>
+    </div>
+
+    <div class="card-body px-4 py-3">
+        <form th:fragment="_form" th:action="@{/admin/user/save}"
+              method="post" th:object="${user}">
+            <input type="hidden" th:field="*{id}"/>
+
+            <!-- Hàng 1 -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Tên người dùng</label>
+                    <input type="text" class="form-control"
+                           th:field="*{name}" placeholder="Nhập tên người dùng" disabled/>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Giới tính</label>
+                    <input type="text" class="form-control"
+                           th:field="*{genderText}" placeholder="Nhập giới tính" disabled/>
+                </div>
+            </div>
+
+            <!-- Hàng 2 -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Số điện thoại</label>
+                    <input type="email" class="form-control"
+                           th:field="*{phonenumber}" placeholder="Nhập số điện thoại" disabled/>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Email</label>
+                    <input type="text" class="form-control"
+                           th:field="*{email}" placeholder="Nhập số email" disabled/>
+                </div>
+            </div>
+
+            <!-- Hàng 3 -->
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Quyền</label>
+                <select class="form-select" th:field="*{role.id}">
+                    <option value="">Chọn quyền</option>
+                    <option th:each="r : ${roles}"
+                            th:value="${r.id}"
+                            th:text="${r.name}">
+                    </option>
+                </select>
+            </div>
+
+            <!-- Nút lưu -->
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save me-1"></i> Lưu
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
