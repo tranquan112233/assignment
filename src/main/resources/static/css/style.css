@@ -63,19 +63,23 @@ body {
 }
 
 /* Navbar Buttons */
-.btn-cart, .btn-account {
+.btn-cart, .btn-account, .btn-admin, .btn-staff {
     border-radius: 25px;
     padding: 8px 15px;
     font-weight: 500;
     transition: all 0.3s ease;
+    border: 1px solid #dc3545;
+    color: #dc3545;
 }
 
-.btn-cart:hover, .btn-account:hover {
+/* Hover effect */
+.btn-cart:hover, .btn-account:hover, .btn-admin:hover, .btn-staff:hover {
     background-color: #dc3545;
     border-color: #dc3545;
     color: white;
 }
 
+/* Badge styling */
 .btn-cart .badge {
     font-size: 0.75rem;
     padding: 4px 8px;
