@@ -29,9 +29,10 @@
             <td th:text="${#numbers.formatDecimal(o.total, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></td>
             <td>
                 <span th:text="${o.status}"
-                      th:classappend="${o.status == 'Hoàn thành'} ? 'text-success fw-bold' :
-                                      (o.status == 'Đang giao' ? 'text-primary fw-bold' :
-                                      (o.status == 'Hủy' ? 'text-danger fw-bold' : 'text-secondary'))">
+                      th:classappend="${o.status == 'Đã thanh toán'} ? 'text-success fw-bold' :
+                      (o.status == 'Đang giao hàng' ? 'text-primary fw-bold' :
+                      (o.status == 'Đã giao hàng' ? 'text-info fw-bold' :
+                      (o.status == 'Hủy' ? 'text-danger fw-bold' : 'text-secondary fw-bold')))">
                 </span>
             </td>
             <td class="d-flex justify-content-center gap-1">

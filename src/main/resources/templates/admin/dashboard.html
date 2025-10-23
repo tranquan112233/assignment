@@ -12,7 +12,7 @@
             <div class="card text-center shadow-sm border-0">
                 <div class="card-body">
                     <h5 class="card-title text-primary">Tổng sản phẩm</h5>
-                    <p class="display-6 fw-bold">0</p>
+                    <p class="display-6 fw-bold" th:text="${totalProducts}">0</p>
                     <i class="bi bi-box-seam fs-2 text-primary"></i>
                 </div>
             </div>
@@ -23,7 +23,7 @@
             <div class="card text-center shadow-sm border-0">
                 <div class="card-body">
                     <h5 class="card-title text-success">Tổng khách hàng</h5>
-                    <p class="display-6 fw-bold">0</p>
+                    <p class="display-6 fw-bold" th:text="${totalCustomers}">0</p>
                     <i class="bi bi-people fs-2 text-success"></i>
                 </div>
             </div>
@@ -34,7 +34,7 @@
             <div class="card text-center shadow-sm border-0">
                 <div class="card-body">
                     <h5 class="card-title text-warning">Doanh thu tháng</h5>
-                    <p class="display-6 fw-bold">0</p>
+                    <p class="display-6 fw-bold" th:text="${#numbers.formatDecimal(totalRevenue, 0, 'COMMA', 0, 'POINT')} + ' ₫'">0</p>
                     <i class="bi bi-cash-stack fs-2 text-warning"></i>
                 </div>
             </div>

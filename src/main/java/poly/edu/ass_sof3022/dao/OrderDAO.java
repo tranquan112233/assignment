@@ -16,4 +16,10 @@ public interface OrderDAO extends JpaRepository<Order, Integer> {
            OR CAST(o.id AS string) LIKE CONCAT('%', :keyword, '%')
     """)
     Page<Order> searchAll(@Param("keyword") String keyword, Pageable pageable);
+
+    @Query("SELECT COALESCE(SUM(o.total), 0) " +
+            "FROM Order o " +
+            "WHERE MONTH(o.date) = MONTH(CURRENT_DATE) " +
+            "AND o.status = 'Đã thanh toán'")
+    Double getTotalRevenueThisMonth();
 }

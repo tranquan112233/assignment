@@ -13,11 +13,11 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">Khách hàng</label>
-                    <input type="text" class="form-control" th:value="*{user.name}" readonly>
+                    <input type="text" class="form-control" th:value="*{user.name}" disabled>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">Địa chỉ giao hàng</label>
-                    <input type="text" class="form-control" th:value="*{address.address}" readonly>
+                    <input type="text" class="form-control" th:value="*{address.address}" disabled>
                 </div>
             </div>
 
@@ -26,9 +26,7 @@
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">Trạng thái    đơn hàng</label>
                     <select class="form-select" name="status">
-                        <option th:selected="${o.status == 'Chờ xác nhận'}" value="Chờ xác nhận">Chờ xác nhận</option>
-                        <option th:selected="${o.status == 'Đang giao'}" value="Đang giao">Đang giao</option>
-                        <option th:selected="${o.status == 'Hoàn thành'}" value="Hoàn thành">Hoàn thành</option>
+                        <option th:selected="${o.status == 'Đang giao hàng'}" value="Đang giao hàng">Đang giao hàng</option>
                         <option th:selected="${o.status == 'Hủy'}" value="Hủy">Hủy</option>
                         <option th:selected="${o.status == 'Đã thanh toán'}" value="Đã thanh toán">Đã thanh toán</option>
                     </select>
@@ -37,7 +35,7 @@
                     <label class="form-label fw-semibold">Ngày lập</label>
                     <input type="date" class="form-control"
                            th:value="${#dates.format(o.date, 'yyyy-MM-dd')}"
-                           readonly>
+                           disabled>
                 </div>
             </div>
 
