@@ -1,0 +1,23 @@
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0"><i class="bi bi-tags me-2"></i></i>Thêm / Cập nhật danh mục</h5>
+    </div>
+    <div class="card-body">
+        <form th:fragment="_form" th:object="${category}"
+              th:action="@{/admin/categories/save}" method="post">
+            <input type="hidden" th:field="*{id}">
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Tên danh mục</label>
+                <input type="text" class="form-control"
+                       th:field="*{name}" placeholder="Nhập tên danh mục" required>
+            </div>
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save me-1"></i> Lưu
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

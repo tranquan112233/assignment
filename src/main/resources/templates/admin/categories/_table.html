@@ -1,0 +1,110 @@
+<!-- Ô tìm kiếm -->
+<form class="d-flex mb-3" th:action="@{/admin/categories}" method="get">
+    <input type="text" name="keyword" class="form-control me-2 w-25"
+           placeholder="Tìm danh mục..." th:value="${keyword}">
+    <button type="submit" class="btn btn-primary me-2">
+        <i class="bi bi-search"></i> Tìm
+    </button>
+</form>
+
+<!-- Bảng danh sách danh mục -->
+<div class="table-responsive shadow-sm rounded-3">
+    <table class="table table-hover table-striped align-middle text-center mb-0">
+        <thead class="table-secondary">
+        <tr>
+            <th scope="col"><i class="bi bi-hash"></i></th>
+            <th scope="col"><i class="bi bi-tag"></i> Tên danh mục</th>
+            <th scope="col"><i class="bi bi-gear"></i> Thao tác</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c, st : ${categories}">
+            <td th:text="${st.index + 1 + currentPage * 10}"></td>
+            <td th:text="${c.name}"></td>
+            <td>
+                <!-- Nút sửa -->
+                <a th:href="@{'/admin/categories/edit/' + ${c.id}}"
+                   class="btn btn-sm btn-warning me-1">
+                    <i class="bi bi-pencil-square"></i> Sửa
+                </a>
+
+                <!-- Nút mở modal xác nhận xóa -->
+                <button type="button" class="btn btn-sm btn-danger"
+                        th:attr="data-bs-toggle='modal', data-bs-target='#deleteModal__' + ${c.id}">
+                    <i class="bi bi-trash"></i> Xóa
+                </button>
+
+                <!-- Modal xác nhận xóa cho từng dòng -->
+                <div class="modal fade" th:id="'deleteModal__' + ${c.id}" tabindex="-1"
+                     th:attr="aria-labelledby='deleteLabel__' + ${c.id}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content border-0 shadow-lg">
+                            <div class="modal-header bg-danger text-white">
+                                <h5 class="modal-title" th:id="'deleteLabel__' + ${c.id}">
+                                    <i class="bi bi-exclamation-triangle"></i> Xác nhận xóa
+                                </h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body">
+                                <p>Bạn có chắc muốn xóa danh mục
+                                    <strong th:text="${c.name}">Tên danh mục</strong>
+                                    (ID: <span th:text="${c.id}"></span>) không?</p>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    Hủy
+                                </button>
+                                <a th:href="@{'/admin/categories/delete/' + ${c.id}}" class="btn btn-danger">
+                                    <i class="bi bi-trash"></i> Xóa
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Kết thúc modal -->
+            </td>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(categories)}">
+            <td colspan="3" class="text-muted py-3">
+                <i class="bi bi-exclamation-circle"></i> Không tìm thấy danh mục nào.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Phân trang -->
+<nav th:if="${totalPages > 1}">
+    <ul class="pagination justify-content-center mt-3">
+        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+            <a class="page-link"
+               th:href="${keyword != null && keyword != '' ?
+                  '/admin/categories?page=' + (currentPage - 1) + '&keyword=' + keyword :
+                  '/admin/categories?page=' + (currentPage - 1)}">
+                <i class="bi bi-chevron-left"></i> Trước
+            </a>
+        </li>
+
+        <li class="page-item"
+            th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+            th:classappend="${i == currentPage} ? 'active'">
+            <a class="page-link"
+               th:text="${i + 1}"
+               th:href="${keyword != null && keyword != '' ?
+                  '/admin/categories?page=' + i + '&keyword=' + keyword :
+                  '/admin/categories?page=' + i}"></a>
+        </li>
+
+        <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
+            <a class="page-link"
+               th:href="${keyword != null && keyword != '' ?
+                  '/admin/categories?page=' + (currentPage + 1) + '&keyword=' + keyword :
+                  '/admin/categories?page=' + (currentPage + 1)}">
+                Sau <i class="bi bi-chevron-right"></i>
+            </a>
+        </li>
+    </ul>
+</nav>
